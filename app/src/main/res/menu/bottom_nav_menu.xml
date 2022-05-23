@@ -12,7 +12,7 @@
         />
 
     <item android:id="@+id/Quisioneri"
-        android:icon="@drawable/ic_baseline_home_24"
+        android:icon="@drawable/ic_baseline_settings_24"
         android:title="Quisioneri"
         />
 
