@@ -7,7 +7,7 @@
         />
 
     <item android:id="@+id/Setting"
-        android:icon="@drawable/ic_baseline_home_24"
+        android:icon="@drawable/ic_baseline_surround_sound_24"
         android:title="Setting"
         />
 
