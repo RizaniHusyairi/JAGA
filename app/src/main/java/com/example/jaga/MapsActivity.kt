@@ -1,6 +1,7 @@
 package com.example.jaga
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -31,6 +32,26 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        supportActionBar?.hide()
+
+        if (isMicrophonePresent()){
+            getMicrophonePermission()
+        }
+
+    }
+
+
+    private fun isMicrophonePresent(): Boolean {
+        return this.packageManager.hasSystemFeature(PackageManager.FEATURE_MICROPHONE)
+    }
+    private fun getMicrophonePermission(){
+        if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.RECORD_AUDIO)
+            == PackageManager.PERMISSION_DENIED){
+            ActivityCompat.requestPermissions(this,  Array<String>(10) { Manifest.permission.RECORD_AUDIO },
+                MICROPHONE_PERMISSION_CODE
+            )
+        }
     }
 
     /**
@@ -52,8 +73,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     fun btnRecordPressed( v: View){
-
+        val intent: Intent = Intent(this,RecordActivity::class.java)
+        startActivity(intent)
     }
-
+    companion object{
+        private const val MICROPHONE_PERMISSION_CODE = 200
+    }
 
 }

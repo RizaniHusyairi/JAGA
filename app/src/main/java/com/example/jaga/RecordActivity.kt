@@ -7,6 +7,7 @@ import android.media.MediaRecorder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
+import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -16,7 +17,6 @@ import java.io.File
 
 class RecordActivity : AppCompatActivity() {
 
-    private val MICROPHONE_PERMISSION_CODE = 200
     private lateinit var binding: ActivityRecordBinding
     private lateinit var mediaRecorder: MediaRecorder
 
@@ -24,10 +24,10 @@ class RecordActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_record)
+        binding = ActivityRecordBinding.inflate(layoutInflater)
 
-        if (isMicrophonePresent()){
-            getMicrophonePermission()
-        }
+        supportActionBar?.hide()
+
 
         try {
             mediaRecorder = MediaRecorder()
@@ -47,15 +47,14 @@ class RecordActivity : AppCompatActivity() {
 
 
     }
+    fun btnStopPressed(v:View){
+        mediaRecorder.stop()
+        mediaRecorder.release()
+        Toast.makeText(this,"Recording is Stopped", Toast.LENGTH_LONG).show()
+//        mediaRecorder = null
 
-    private fun isMicrophonePresent(): Boolean {
-        return this.packageManager.hasSystemFeature(PackageManager.FEATURE_MICROPHONE)
-    }
-    private fun getMicrophonePermission(){
-        if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.RECORD_AUDIO)
-            == PackageManager.PERMISSION_DENIED){
-            ActivityCompat.requestPermissions(this,  Array<String>(3) { Manifest.permission.RECORD_AUDIO },MICROPHONE_PERMISSION_CODE)
-        }
+
+        binding.textRecord.text = "Stop Merekam Suara"
     }
 
     private fun getRecordingFilePath(): String {
@@ -64,4 +63,5 @@ class RecordActivity : AppCompatActivity() {
         val file:File = File(musicDirectory,"testRecordingFile"+".mp3")
         return file.path
     }
+
 }

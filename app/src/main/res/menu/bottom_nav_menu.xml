@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:id="@+id/Home"
-        android:icon="@drawable/ic_baseline_home_24"
-        android:title="Home"
-        />
-
     <item android:id="@+id/Setting"
-        android:icon="@drawable/ic_baseline_surround_sound_24"
+        android:icon="@drawable/ic_baseline_settings_24"
         android:title="Setting"
         />
 
