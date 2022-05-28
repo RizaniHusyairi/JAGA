@@ -6,8 +6,9 @@
         />
 
     <item android:id="@+id/Quisioneri"
-        android:icon="@drawable/ic_baseline_home_24"
+        android:icon="@drawable/ic_baseline_assignment_24"
         android:title="Quisioneri"
+        android:onClick="btnQuestionnaire"
         />
 
 </menu>

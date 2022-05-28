@@ -76,6 +76,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val intent: Intent = Intent(this,RecordActivity::class.java)
         startActivity(intent)
     }
+
+    fun btnQuestionnaire(v:View){
+        val intent: Intent = Intent(this,QuisionerActivity::class.java)
+        startActivity(intent)
+    }
+
+
     companion object{
         private const val MICROPHONE_PERMISSION_CODE = 200
     }

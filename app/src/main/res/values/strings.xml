@@ -3,4 +3,5 @@
     <string name="title_activity_maps">MapsActivity</string>
     <string name="sedang_merekam_suara">Sedang Merekam Suara...</string>
     <string name="stop_rekam_suara">STOP REKAM SUARA</string>
+    <string name="ini_kuisioner">Ini Kuisioner</string>
 </resources>
