@@ -23,8 +23,8 @@ class RecordActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_record)
         binding = ActivityRecordBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         supportActionBar?.hide()
 
@@ -38,7 +38,6 @@ class RecordActivity : AppCompatActivity() {
             mediaRecorder.prepare()
             mediaRecorder.start()
 
-            Toast.makeText(this,"Recording is started", Toast.LENGTH_LONG).show()
         }catch (e: Exception){
             e.printStackTrace()
         }
@@ -50,7 +49,6 @@ class RecordActivity : AppCompatActivity() {
     fun btnStopPressed(v:View){
         mediaRecorder.stop()
         mediaRecorder.release()
-        Toast.makeText(this,"Recording is Stopped", Toast.LENGTH_LONG).show()
 //        mediaRecorder = null
 
 

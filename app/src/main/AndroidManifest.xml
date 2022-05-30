@@ -3,6 +3,9 @@
     package="com.example.jaga">
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:allowBackup="true"
@@ -11,6 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.JAGA">
+        <activity
+            android:name=".SettingActivity"
+            android:exported="false" />
         <activity
             android:name=".QuisionerActivity"
             android:exported="false" />

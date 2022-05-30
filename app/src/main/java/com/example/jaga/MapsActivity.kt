@@ -3,24 +3,27 @@ package com.example.jaga
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
+import android.location.Location
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-
+import com.example.jaga.databinding.ActivityMapsBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
-import com.example.jaga.databinding.ActivityMapsBinding
+
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
+    private lateinit var fusedLocationClient: Fused
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,16 +31,16 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.bottomNavigasiView.background = null
+
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         supportActionBar?.hide()
-
-        if (isMicrophonePresent()){
-            getMicrophonePermission()
-        }
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
     }
 
@@ -66,10 +69,46 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+
+        getMyLocation()
+        mMap.uiSettings.isMyLocationButtonEnabled = false
+        if (isMicrophonePresent()){
+            getMicrophonePermission()
+        }
+
+        binding.btnMyLoc.setOnClickListener {
+
+        }
+
+    }
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                getMyLocation()
+            }
+        }
+
+    private fun getMyLocation() {
+        if (ContextCompat.checkSelfPermission(
+                this.applicationContext,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            mMap.isMyLocationEnabled = true
+            val latLng = LatLng(loc, getLongitude().toDouble())
+            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 18f)
+            mMap.animateCamera(cameraUpdate)
+        } else {
+            requestPermissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ).toString()
+            )
+        }
     }
 
     fun btnRecordPressed( v: View){
@@ -77,7 +116,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         startActivity(intent)
     }
 
-    fun btnQuestionnaire(v:View){
+    fun btnQuestionnaire(item: MenuItem) {
         val intent: Intent = Intent(this,QuisionerActivity::class.java)
         startActivity(intent)
     }
@@ -86,5 +125,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     companion object{
         private const val MICROPHONE_PERMISSION_CODE = 200
     }
+
 
 }
