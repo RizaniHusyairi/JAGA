@@ -23,6 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="15"
+        android:hint="Masukkan Nomor HP"
         android:importantForAutofill="no"
         android:inputType="phone"
         android:minHeight="48dp"
@@ -36,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="75dp"
         android:fontFamily="sans-serif"
         android:text="@string/welcome_back"
         android:textColor="#000000"
@@ -47,13 +48,17 @@
 
     <Button
         android:id="@+id/btn_login"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="350dp"
-        android:onClick="onClickLogin"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="32dp"
         android:background="@drawable/button_collor"
+        android:onClick="onClickLogin"
         android:text="@string/login"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/noHp" />
+        android:textSize="18sp"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/noHp"
+        app:layout_constraintStart_toStartOf="@+id/noHp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
