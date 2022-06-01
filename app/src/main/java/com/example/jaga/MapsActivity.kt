@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.jaga.databinding.ActivityMapsBinding
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -23,7 +25,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
-    private lateinit var fusedLocationClient: Fused
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,9 +100,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             mMap.isMyLocationEnabled = true
-            val latLng = LatLng(loc, getLongitude().toDouble())
-            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 18f)
-            mMap.animateCamera(cameraUpdate)
+//            val latLng = LatLng(loc, getLongitude().toDouble())
+//            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 18f)
+//            mMap.animateCamera(cameraUpdate)
         } else {
             requestPermissionLauncher.launch(
                 arrayOf(
