@@ -18,4 +18,5 @@
     <string name="login">Login</string>
     <string name="welcome_back">Welcome Back...</string>
     <string name="dummy_ask">Apakah kamu mengalami intimidasi, penghinaan, direndahkan, atau dipermalukan ?</string>
+    <string name="verifikasi_nomor_handphone">Verifikasi Nomor HandPhone</string>
 </resources>

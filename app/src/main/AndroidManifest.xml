@@ -14,9 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.JAGA">
         <activity
+            android:name=".VerifyActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
-            android:exported="true"
-            >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -50,7 +52,7 @@
         <activity
             android:name=".MapsActivity"
             android:exported="false"
-            android:label="@string/title_activity_maps"/>
+            android:label="@string/title_activity_maps" />
     </application>
 
 </manifest>
