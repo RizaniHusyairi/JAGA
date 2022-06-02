@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "449841392680",
+    "firebase_url": "https://fir-jaga-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "fir-jaga",
+    "storage_bucket": "fir-jaga.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:449841392680:android:81bfd62400c8b2b4c0591d",
+        "android_client_info": {
+          "package_name": "com.example.jaga"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "449841392680-jl6enlvde3dl8d665j9d29e2fap8ee7h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.jaga",
+            "certificate_hash": "1a2e5314556298577c27685112903daa66b34119"
+          }
+        },
+        {
+          "client_id": "449841392680-2os6ss0g9vr43d905uht7m9edm2vipk1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5VYJIY6HJAAFYL3HreZ9I5Bg5DgHZq4Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "449841392680-2os6ss0g9vr43d905uht7m9edm2vipk1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

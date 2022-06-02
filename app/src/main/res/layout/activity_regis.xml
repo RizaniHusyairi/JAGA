@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".RegisActivity">
 
 
     <LinearLayout
@@ -52,10 +51,19 @@
             android:importantForAutofill="no"
             android:inputType="phone"
             android:minHeight="48dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/logo"
             tools:ignore="SpeakableTextPresentCheck" />
+
+        <EditText
+            android:id="@+id/nama"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:ems="15"
+            android:hint="Masukkan Nama Lengkap"
+            android:minHeight="48dp"
+            tools:ignore="SpeakableTextPresentCheck" />
+
 
 
     </LinearLayout>
@@ -78,8 +86,8 @@
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
             android:background="@drawable/button_color"
-            android:onClick="onClickLogin"
-            android:text="@string/login"
+            android:text="Daftar"
+            android:onClick="onClickRegis"
             android:textSize="18sp"
             app:backgroundTint="@null" />
 
@@ -99,27 +107,5 @@
 
             />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal">
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Belum punya akun?" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Register disini"
-                android:textColor="@color/blue_200"
-                android:onClick="regBtn"/>
-
-        </LinearLayout>
-
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
-

@@ -1,23 +1,28 @@
 package com.example.jaga
 
 import android.Manifest
+import android.app.PendingIntent
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Location
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.jaga.databinding.ActivityMapsBinding
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.GeofencingClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
 
 
@@ -26,6 +31,22 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var geofencingClient: GeofencingClient
+
+
+    private val centerLat = -6.923229
+    private val centerLng = 107.617154
+    private val geofenceRadius = 200.0
+
+    private val geofencePendingIntent: PendingIntent by lazy {
+        val intent = Intent(this, GeofenceBroadcastReceiver::class.java)
+        intent.action = GeofenceBroadcastReceiver.ACTION_GEOFENCE_EVENT
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_MUTABLE)
+        } else {
+            PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +56,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         binding.bottomNavigasiView.background = null
 
+        val isRecord = intent.getStringExtra(SUCCESS_RECORD)
+        if(isRecord?.isEmpty() == false){
+            Toast.makeText(applicationContext,isRecord,Toast.LENGTH_SHORT).show()
+        }
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
@@ -81,6 +106,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         binding.btnMyLoc.setOnClickListener {
 
         }
+        val stanford = LatLng(centerLat, centerLng)
+        //mMap.addMarker(MarkerOptions().position(stanford).title("Stanford University"))
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(stanford, 15f))
+
+        mMap.addCircle(
+            CircleOptions()
+                .center(stanford)
+                .radius(geofenceRadius)
+                .fillColor(0x22FF0000)
+                .strokeColor(Color.YELLOW)
+                .strokeWidth(3f)
+        )
+
+        getMyLocation()
+        addGeofence()
 
     }
 
@@ -126,6 +166,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     companion object{
         private const val MICROPHONE_PERMISSION_CODE = 200
+        const val SUCCESS_RECORD = "success_record"
     }
 
 

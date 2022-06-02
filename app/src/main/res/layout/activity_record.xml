@@ -8,15 +8,15 @@
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textRecord"
-        app:lottie_rawRes="@raw/recording_animation"
-        app:lottie_loop="true"
         app:lottie_autoPlay="true"
-        />
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/recording_animation" />
 
 
     <TextView
@@ -33,12 +33,12 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
+        android:layout_marginBottom="150dp"
+        app:backgroundTint="@null"
+        android:background="@drawable/button_color"
         android:onClick="btnStopPressed"
-        android:layout_marginBottom="100dp"
-        android:background="@drawable/transparent_background"
         android:text="@string/stop_rekam_suara"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

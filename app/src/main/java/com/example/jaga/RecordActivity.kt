@@ -2,6 +2,7 @@ package com.example.jaga
 
 import android.Manifest
 import android.content.ContextWrapper
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.MediaRecorder
 import androidx.appcompat.app.AppCompatActivity
@@ -53,6 +54,10 @@ class RecordActivity : AppCompatActivity() {
 
 
         binding.textRecord.text = "Stop Merekam Suara"
+        val backActiv = Intent(this,MapsActivity::class.java)
+        backActiv.putExtra(MapsActivity.SUCCESS_RECORD, "Rekaman Suara Berhasil Disimpan")
+
+        startActivity(backActiv)
     }
 
     private fun getRecordingFilePath(): String {

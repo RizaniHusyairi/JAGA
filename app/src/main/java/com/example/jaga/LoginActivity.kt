@@ -25,5 +25,10 @@ class LoginActivity : AppCompatActivity() {
         startActivity(iLogin)
     }
 
+    fun regBtn(view: View) {
+        val regis = Intent(this,RegisActivity::class.java)
+        startActivity(regis)
+    }
+
 
 }

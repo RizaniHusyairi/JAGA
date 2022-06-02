@@ -15,7 +15,7 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="logo">logo</string>
-    <string name="login">Login</string>
+    <string name="login">Masuk</string>
     <string name="welcome_back">Welcome Back...</string>
     <string name="dummy_ask">Apakah kamu mengalami intimidasi, penghinaan, direndahkan, atau dipermalukan ?</string>
     <string name="verifikasi_nomor_handphone">Verifikasi Nomor HandPhone</string>
