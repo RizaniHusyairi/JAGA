@@ -22,4 +22,6 @@
     <string name="_62">+62</string>
     <string name="_81258279283">81258279283</string>
     <string name="or">Atau</string>
+    <string name="masukkan_kode_otp">Masukkan kode OTP</string>
+    <string name="verifikasi">Verifikasi</string>
 </resources>
