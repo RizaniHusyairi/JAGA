@@ -1,10 +1,13 @@
 package com.example.jaga
 
 import android.Manifest
+import android.annotation.SuppressLint
+import android.annotation.TargetApi
 import android.app.PendingIntent
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
@@ -15,9 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.jaga.databinding.ActivityMapsBinding
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.GeofencingClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -104,10 +105,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         binding.btnMyLoc.setOnClickListener {
-
+            getMyLocation()
         }
+
+
+
         val stanford = LatLng(centerLat, centerLng)
-        //mMap.addMarker(MarkerOptions().position(stanford).title("Stanford University"))
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(stanford, 15f))
 
         mMap.addCircle(
@@ -124,7 +127,44 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-    private val requestPermissionLauncher =
+    @SuppressLint("MissingPermission")
+    private fun addGeofence() {
+        geofencingClient = LocationServices.getGeofencingClient(this)
+        val geofence = Geofence.Builder()
+            .setRequestId("kampus")
+            .setCircularRegion(
+                centerLat,
+                centerLng,
+                geofenceRadius.toFloat()
+            )
+            .setExpirationDuration(Geofence.NEVER_EXPIRE)
+            .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_DWELL or Geofence.GEOFENCE_TRANSITION_ENTER)
+            .setLoiteringDelay(5000)
+            .build()
+        val geofencingRequest = GeofencingRequest.Builder()
+            .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+            .addGeofence(geofence)
+            .build()
+        geofencingClient.removeGeofences(geofencePendingIntent).run {
+            addOnCompleteListener {
+                geofencingClient.addGeofences(geofencingRequest, geofencePendingIntent).run {
+                    addOnSuccessListener {
+                        showToast("Geofencing added")
+                    }
+                    addOnFailureListener {
+                        showToast("Geofencing not added : ${it.message}")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showToast(text: String) {
+        Toast.makeText(this@MapsActivity, text, Toast.LENGTH_SHORT).show()
+    }
+
+
+    private val requestBackgroundLocationPermissionLauncher =
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
@@ -133,23 +173,71 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
+    private val runningQOrLater = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
+
+    @TargetApi(Build.VERSION_CODES.Q)
+    private val requestLocationPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                if (runningQOrLater) {
+                    requestBackgroundLocationPermissionLauncher.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+                } else {
+                    getMyLocation()
+                }
+            }
+        }
+
+    @TargetApi(Build.VERSION_CODES.Q)
+    private fun checkForegroundAndBackgroundLocationPermission(): Boolean {
+        val foregroundLocationApproved = checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+        val backgroundPermissionApproved =
+            if (runningQOrLater) {
+                checkPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+            } else {
+                true
+            }
+        return foregroundLocationApproved && backgroundPermissionApproved
+    }
+
+    private fun checkPermission(permission: String): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+//    private fun getMyLocation() {
+//        if (ContextCompat.checkSelfPermission(
+//                this.applicationContext,
+//                Manifest.permission.ACCESS_FINE_LOCATION
+//            ) == PackageManager.PERMISSION_GRANTED
+//        ) {
+//            mMap.isMyLocationEnabled = true
+
+//        } else {
+//            requestPermissionLauncher.launch(
+//                arrayOf(
+//                    Manifest.permission.ACCESS_FINE_LOCATION,
+//                    Manifest.permission.ACCESS_COARSE_LOCATION
+//                ).toString()
+//            )
+//        }
+//    }
+    @SuppressLint("MissingPermission")
     private fun getMyLocation() {
-        if (ContextCompat.checkSelfPermission(
-                this.applicationContext,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
+        if (checkForegroundAndBackgroundLocationPermission() && checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) {
             mMap.isMyLocationEnabled = true
-//            val latLng = LatLng(loc, getLongitude().toDouble())
-//            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 18f)
-//            mMap.animateCamera(cameraUpdate)
+            fusedLocationClient.lastLocation.addOnSuccessListener { location:Location? ->
+                if (location != null){
+                    val latLng = LatLng(location.latitude, location.longitude)
+                    val cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 18f)
+                    mMap.animateCamera(cameraUpdate)
+                }
+            }
         } else {
-            requestPermissionLauncher.launch(
-                arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ).toString()
-            )
+            requestLocationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
     }
 

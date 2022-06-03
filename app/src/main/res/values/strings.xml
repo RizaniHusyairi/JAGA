@@ -3,7 +3,7 @@
     <string name="title_activity_maps">MapsActivity</string>
     <string name="sedang_merekam_suara">Sedang Merekam Suara...</string>
     <string name="stop_rekam_suara">STOP REKAM SUARA</string>
-    <string name="ini_kuisioner">Ini Kuisioner</string>
+    <string name="ini_kuisioner">Ini Kuisioner (Cooming Soon)</string>
     <string name="btnmylocation">btnMyLocation</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="prompt_email">Email</string>
@@ -16,7 +16,10 @@
     <string name="login_failed">"Login failed"</string>
     <string name="logo">logo</string>
     <string name="login">Masuk</string>
-    <string name="welcome_back">Welcome Back...</string>
+    <string name="welcome_back">Selamat datang kembali...</string>
     <string name="dummy_ask">Apakah kamu mengalami intimidasi, penghinaan, direndahkan, atau dipermalukan ?</string>
     <string name="verifikasi_nomor_handphone">Verifikasi Nomor HandPhone</string>
+    <string name="_62">+62</string>
+    <string name="_81258279283">81258279283</string>
+    <string name="or">Atau</string>
 </resources>

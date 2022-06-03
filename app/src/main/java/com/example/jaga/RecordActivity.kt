@@ -1,20 +1,18 @@
 package com.example.jaga
 
-import android.Manifest
 import android.content.ContextWrapper
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.media.MediaRecorder
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.view.View
-import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import com.example.jaga.databinding.ActivityMapsBinding
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import com.example.jaga.databinding.ActivityRecordBinding
 import java.io.File
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class RecordActivity : AppCompatActivity() {
 
@@ -34,7 +32,9 @@ class RecordActivity : AppCompatActivity() {
             mediaRecorder = MediaRecorder()
             mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
             mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
-            mediaRecorder.setOutputFile(getRecordingFilePath())
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                mediaRecorder.setOutputFile(getRecordingFilePath())
+            }
             mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
             mediaRecorder.prepare()
             mediaRecorder.start()
@@ -60,10 +60,14 @@ class RecordActivity : AppCompatActivity() {
         startActivity(backActiv)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun getRecordingFilePath(): String {
+        val d = LocalDateTime.now()
+        val s = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
+        val formatted = d.format(s)
         val contextWrapper:ContextWrapper = ContextWrapper(applicationContext)
         val musicDirectory: File? = contextWrapper.getExternalFilesDir(Environment.DIRECTORY_MUSIC)
-        val file:File = File(musicDirectory,"testRecordingFile"+".mp3")
+        val file:File = File(musicDirectory, "case_$formatted.mp3")
         return file.path
     }
 
