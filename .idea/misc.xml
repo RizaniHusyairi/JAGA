@@ -3,12 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Kampus Merdeka/Capstone/JAGA/app/src/main/res/drawable/button_collor.xml" value="0.153" />
         <entry key="..\:/Kampus Merdeka/Capstone/JAGA/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.124" />
         <entry key="..\:/Kampus Merdeka/Capstone/JAGA/app/src/main/res/drawable/ic_baseline_surround_sound_24.xml" value="0.124" />
+        <entry key="..\:/Kampus Merdeka/Capstone/JAGA/app/src/main/res/layout/activity_login.xml" value="0.2" />
         <entry key="..\:/Kampus Merdeka/Capstone/JAGA/app/src/main/res/layout/activity_maps.xml" value="0.72" />
+        <entry key="..\:/Kampus Merdeka/Capstone/JAGA/app/src/main/res/layout/activity_quisioner.xml" value="0.13677536231884058" />
+        <entry key="..\:/Kampus Merdeka/Capstone/JAGA/app/src/main/res/layout/activity_record.xml" value="0.14322916666666666" />
+        <entry key="..\:/Kampus Merdeka/Capstone/JAGA/app/src/main/res/layout/activity_regis.xml" value="0.1" />
+        <entry key="..\:/Kampus Merdeka/Capstone/JAGA/app/src/main/res/layout/activity_setting.xml" value="0.14322916666666666" />
+        <entry key="..\:/Kampus Merdeka/Capstone/JAGA/app/src/main/res/layout/activity_verify.xml" value="0.1" />
         <entry key="..\:/Kampus Merdeka/Capstone/JAGA/app/src/main/res/menu/bottom_nav_menu.xml" value="0.11302083333333333" />
-        <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/drawable/button_collor.xml" value="0.1015" />
-        <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/drawable/button_color.xml" value="0.1015" />
+        <entry key="..\:/Kampus Merdeka/Capstone/JAGA/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.124" />
         <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/drawable/ic_baseline_assignment_24.xml" value="0.1" />
         <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.124" />
         <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/drawable/ic_baseline_perm_contact_calendar_24.xml" value="0.1" />
@@ -18,12 +24,9 @@
         <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1015" />
         <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/drawable/item_selector.xml" value="0.124" />
         <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/drawable/transparent_background.xml" value="0.124" />
-        <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/layout/activity_login.xml" value="0.2" />
         <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/layout/activity_maps.xml" value="0.2766295707472178" />
         <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/layout/activity_quisioner.xml" value="0.1" />
-        <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/layout/activity_record.xml" value="0.1" />
-        <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/layout/activity_verify.xml" value="0.1" />
-        <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/layout/item_row_ask.xml" value="0.33" />
+        <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/layout/activity_record.xml" value="0.25" />
         <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1" />
       </map>
     </option>

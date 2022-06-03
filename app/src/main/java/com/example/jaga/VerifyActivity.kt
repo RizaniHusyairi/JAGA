@@ -2,7 +2,10 @@ package com.example.jaga
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
+import androidx.core.widget.addTextChangedListener
 import com.example.jaga.databinding.ActivityVerifyBinding
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
@@ -27,7 +30,6 @@ class VerifyActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         mAuth = Firebase.auth
-
 
         callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks(){
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
@@ -62,6 +64,113 @@ class VerifyActivity : AppCompatActivity() {
             .setCallbacks(callbacks)          // OnVerificationStateChangedCallbacks
             .build()
         PhoneAuthProvider.verifyPhoneNumber(options)
+
+
+        binding.angka1.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if(!p0.toString().trim().isEmpty()){
+                    binding.angka2.requestFocus()
+                }
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+        })
+        binding.angka2.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if(!p0.toString().trim().isEmpty()){
+                    binding.angka3.requestFocus()
+                }else if(p0.toString().trim().isEmpty()){
+                    binding.angka1.requestFocus()
+                }
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+        })
+        binding.angka3.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if(!p0.toString().trim().isEmpty()){
+                    binding.angka4.requestFocus()
+                }else if(p0.toString().trim().isEmpty()){
+                    binding.angka2.requestFocus()
+                }
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+        })
+        binding.angka4.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if(!p0.toString().trim().isEmpty()){
+                    binding.angka5.requestFocus()
+                }else if(p0.toString().trim().isEmpty()){
+                    binding.angka3.requestFocus()
+                }
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+        })
+        binding.angka5.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if(!p0.toString().trim().isEmpty()){
+                    binding.angka6.requestFocus()
+                }else if(p0.toString().trim().isEmpty()){
+                    binding.angka4.requestFocus()
+                }
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+        })
+        binding.angka6.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if(p0.toString().trim().isEmpty()){
+                    binding.angka5.requestFocus()
+                }
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+        })
+
 
 
 

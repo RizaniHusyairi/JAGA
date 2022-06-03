@@ -35,9 +35,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var geofencingClient: GeofencingClient
 
 
-    private val centerLat = -6.923229
-    private val centerLng = 107.617154
-    private val geofenceRadius = 200.0
+    private val centerLat = -0.493349
+    private val centerLng = 117.147487
+    private val geofenceRadius = 100.0
+
+    private val centerLat2 = -0.495242
+    private val centerLng2 = 117.148974
 
     private val geofencePendingIntent: PendingIntent by lazy {
         val intent = Intent(this, GeofenceBroadcastReceiver::class.java)
@@ -111,14 +114,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
         val stanford = LatLng(centerLat, centerLng)
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(stanford, 15f))
+//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(stanford, 15f))
 
         mMap.addCircle(
             CircleOptions()
                 .center(stanford)
                 .radius(geofenceRadius)
                 .fillColor(0x22FF0000)
-                .strokeColor(Color.YELLOW)
+                .strokeColor(Color.RED)
                 .strokeWidth(3f)
         )
 
@@ -141,13 +144,40 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_DWELL or Geofence.GEOFENCE_TRANSITION_ENTER)
             .setLoiteringDelay(5000)
             .build()
+        val geofence2 = Geofence.Builder()
+            .setRequestId("kampus")
+            .setCircularRegion(
+                centerLat2,
+                centerLng2,
+                geofenceRadius.toFloat()
+            )
+            .setExpirationDuration(Geofence.NEVER_EXPIRE)
+            .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_DWELL or Geofence.GEOFENCE_TRANSITION_ENTER)
+            .setLoiteringDelay(5000)
+            .build()
         val geofencingRequest = GeofencingRequest.Builder()
             .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
             .addGeofence(geofence)
             .build()
+        val geofencingRequest2 = GeofencingRequest.Builder()
+            .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+            .addGeofence(geofence2)
+            .build()
         geofencingClient.removeGeofences(geofencePendingIntent).run {
             addOnCompleteListener {
                 geofencingClient.addGeofences(geofencingRequest, geofencePendingIntent).run {
+                    addOnSuccessListener {
+                        showToast("Geofencing added")
+                    }
+                    addOnFailureListener {
+                        showToast("Geofencing not added : ${it.message}")
+                    }
+                }
+            }
+        }
+        geofencingClient.removeGeofences(geofencePendingIntent).run {
+            addOnCompleteListener {
+                geofencingClient.addGeofences(geofencingRequest2, geofencePendingIntent).run {
                     addOnSuccessListener {
                         showToast("Geofencing added")
                     }

@@ -1,42 +1,34 @@
 {
   "project_info": {
-    "project_number": "449841392680",
-    "firebase_url": "https://fir-jaga-default-rtdb.asia-southeast1.firebasedatabase.app",
-    "project_id": "fir-jaga",
-    "storage_bucket": "fir-jaga.appspot.com"
+    "project_number": "704197898181",
+    "firebase_url": "https://hardy-thinker-343807-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "hardy-thinker-343807",
+    "storage_bucket": "hardy-thinker-343807.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:449841392680:android:81bfd62400c8b2b4c0591d",
+        "mobilesdk_app_id": "1:704197898181:android:cfc94fc4a17e69ea2ae5ac",
         "android_client_info": {
           "package_name": "com.example.jaga"
         }
       },
       "oauth_client": [
         {
-          "client_id": "449841392680-jl6enlvde3dl8d665j9d29e2fap8ee7h.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.jaga",
-            "certificate_hash": "1a2e5314556298577c27685112903daa66b34119"
-          }
-        },
-        {
-          "client_id": "449841392680-2os6ss0g9vr43d905uht7m9edm2vipk1.apps.googleusercontent.com",
+          "client_id": "704197898181-86t2tctc153u3c23l7hm823a2buojssj.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC5VYJIY6HJAAFYL3HreZ9I5Bg5DgHZq4Q"
+          "current_key": "AIzaSyDNWStBMCF03zc0fmW7Jk-iprdwSPhNT0c"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "449841392680-2os6ss0g9vr43d905uht7m9edm2vipk1.apps.googleusercontent.com",
+              "client_id": "704197898181-86t2tctc153u3c23l7hm823a2buojssj.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

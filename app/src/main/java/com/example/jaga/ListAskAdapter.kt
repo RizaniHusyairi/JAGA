@@ -1,4 +1,3 @@
 package com.example.jaga
 
-class ListAskAdapter {
-}
+class ListAskAdapter
