@@ -114,23 +114,6 @@
             android:textSize="18sp"
             app:backgroundTint="@null" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/or" />
-
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/signInButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-
-
-            />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -148,6 +131,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Register disini"
+                android:layout_marginStart="5dp"
                 android:textColor="@color/blue_200"
                 android:onClick="regBtn"/>
 

@@ -82,7 +82,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun getMicrophonePermission(){
         if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.RECORD_AUDIO)
             == PackageManager.PERMISSION_DENIED){
-            ActivityCompat.requestPermissions(this,  Array<String>(10) { Manifest.permission.RECORD_AUDIO },
+            ActivityCompat.requestPermissions(this,  arrayOf(Manifest.permission.RECORD_AUDIO),
                 MICROPHONE_PERMISSION_CODE
             )
         }

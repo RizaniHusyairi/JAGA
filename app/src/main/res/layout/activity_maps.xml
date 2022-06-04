@@ -30,7 +30,10 @@
             android:layout_gravity="bottom"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
+            android:background="@drawable/button_color"
+            android:backgroundTint="#9C27B0"
 
+            map:backgroundTint="@android:color/transparent"
             map:fabCradleMargin="10dp"
             map:fabCradleRoundedCornerRadius="50dp"
             map:fabCradleVerticalOffset="10dp">
@@ -39,8 +42,8 @@
                 android:id="@+id/bottomNavigasiView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/transparent_background"
-                map:itemTextColor="#D3CFCF"
+                android:background="@android:color/transparent"
+                map:itemTextColor="#FFFFFF"
                 map:menu="@menu/bottom_nav_menu" />
 
         </com.google.android.material.bottomappbar.BottomAppBar>
@@ -49,9 +52,10 @@
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@null"
             android:onClick="btnRecordPressed"
             android:src="@drawable/ic_baseline_surround_sound_24"
-            map:backgroundTint="#AF0404"
+            map:backgroundTint="#8C0C0C"
             map:layout_anchor="@id/bottomAppBar"
             tools:ignore="SpeakableTextPresentCheck" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
@@ -64,11 +68,26 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="30dp"
-        android:background="@drawable/transparent_background"
-        android:backgroundTint="#E31515"
+        android:background="@drawable/button_color"
+        android:backgroundTint="@null"
         android:contentDescription="@string/btnmylocation"
         android:padding="10dp"
         map:srcCompat="@drawable/ic_baseline_my_location_24" />
+
+
+    <ImageButton
+        android:id="@+id/btn_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="30dp"
+        android:background="@drawable/button_color"
+        android:backgroundTint="@null"
+        android:contentDescription="@string/btnmylocation"
+        android:padding="10dp"
+        map:srcCompat="@drawable/ic_baseline_settings_24" />
 
 
 </RelativeLayout>

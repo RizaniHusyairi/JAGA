@@ -21,14 +21,22 @@ class RegisActivity : AppCompatActivity() {
     }
 
     fun onClickRegis(view: View) {
-        if (binding.noHp.text.isEmpty() || binding.nama.text.isEmpty()) {
-            Toast.makeText(applicationContext,"ISI DULU SEMUANYA ANJINGG!!",Toast.LENGTH_SHORT).show()
+        if (binding.noHp.editText?.text?.isEmpty() == true || binding.nama.text.isEmpty()) {
+            Toast.makeText(applicationContext,"Mohon isi semua data",Toast.LENGTH_SHORT).show()
         } else {
             val intent = Intent(this, VerifyActivity::class.java)
-            Log.e("nomor2",binding.noHp.text.toString())
-            intent.putExtra(VerifyActivity.NUMBER_PHONE, binding.noHp.text.toString())
+            Log.e("nomor2", binding.noHp.editText?.text.toString())
+            intent.putExtra(VerifyActivity.NUMBER_PHONE, binding.noHp.editText?.text.toString())
+            intent.putExtra(VerifyActivity.NAME_USER, binding.nama.text.toString())
             startActivity(intent)
         }
+
+    }
+
+    fun logBtn(view: View) {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+
 
     }
 }

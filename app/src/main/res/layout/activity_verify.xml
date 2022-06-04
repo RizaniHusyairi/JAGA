@@ -156,6 +156,7 @@
                 android:text="Tidak Menerima OTP? "/>
 
             <TextView
+                android:id="@+id/kirim_ulang"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Kirim Ulang OTP"
@@ -168,6 +169,7 @@
         </LinearLayout>
         
     <Button
+        android:id="@+id/btn_verifikasi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/button_color"
