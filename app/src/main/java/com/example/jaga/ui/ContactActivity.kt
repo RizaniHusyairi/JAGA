@@ -1,8 +1,7 @@
-package com.example.jaga
+package com.example.jaga.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
@@ -10,12 +9,12 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.ContactsContract
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.jaga.Contact
 import com.example.jaga.databinding.ActivityContactBinding
 
 class ContactActivity : AppCompatActivity() {
@@ -50,7 +49,7 @@ class ContactActivity : AppCompatActivity() {
     @SuppressLint("Range")
     private fun getContactList() {
         val uri: Uri = ContactsContract.Contacts.CONTENT_URI
-        val sort:String = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME+" ASD"
+        val sort:String = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME+" ASC"
 
         val cursor : Cursor? = contentResolver.query(
             uri, null, null  ,null,sort
@@ -59,10 +58,10 @@ class ContactActivity : AppCompatActivity() {
         if (cursor != null) {
             if (cursor.count>0){
                 while (cursor.moveToNext()){
-                    val id:String = cursor.getString(cursor.getColumnIndex(
+                    val id:String? = cursor.getString(cursor.getColumnIndex(
                         ContactsContract.Contacts._ID
                     ))
-                    val name:String = cursor.getString(cursor.getColumnIndex(
+                    val name:String? = cursor.getString(cursor.getColumnIndex(
                         ContactsContract.Contacts.DISPLAY_NAME
                     ))
                     val uriPhone: Uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI
@@ -72,19 +71,21 @@ class ContactActivity : AppCompatActivity() {
                         uriPhone,null,selection, arrayOf(id),null
                     )
 
-                    if(phoneCursor!!.moveToNext()){
-                        val number: String = phoneCursor.getString(phoneCursor.getColumnIndex(
-                            ContactsContract.CommonDataKinds.Phone.NUMBER
-                        ))
-                        val model: Contact = Contact()
+                    if (phoneCursor != null) {
+                        if(phoneCursor.moveToNext()){
+                            val number: String? = phoneCursor.getString(phoneCursor.getColumnIndex(
+                                ContactsContract.CommonDataKinds.Phone.NUMBER
+                            ))
+                            val model = Contact()
 
-                        model.nama= name
-                        model.nomor=number
-                        list.add(model)
+                            model.nama= name
+                            model.nomor=number
+                            list.add(model)
 
-                        phoneCursor.close()
+                            phoneCursor.close()
 
 
+                        }
                     }
 
 

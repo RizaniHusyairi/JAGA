@@ -1,4 +1,4 @@
-package com.example.jaga
+package com.example.jaga.ui
 
 import android.content.ContextWrapper
 import android.content.Intent
@@ -54,7 +54,7 @@ class RecordActivity : AppCompatActivity() {
 
 
         binding.textRecord.text = "Stop Merekam Suara"
-        val backActiv = Intent(this,MapsActivity::class.java)
+        val backActiv = Intent(this, MapsActivity::class.java)
         backActiv.putExtra(MapsActivity.SUCCESS_RECORD, "Rekaman Suara Berhasil Disimpan")
 
         startActivity(backActiv)

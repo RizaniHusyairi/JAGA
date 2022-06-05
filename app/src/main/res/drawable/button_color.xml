@@ -7,10 +7,20 @@
         </shape>
     </item>
 
-    <item>
+    <item >
 
         <shape android:shape="rectangle">
             <gradient android:angle="270" android:endColor="#CB097D" android:startColor="#A80C3B" />
+            <corners android:radius="20dp" />
+
+
+
+        </shape>
+    </item>
+    <item android:state_enabled="false">
+
+        <shape android:shape="rectangle">
+            <solid android:color="#676767"/>
             <corners android:radius="20dp" />
 
 

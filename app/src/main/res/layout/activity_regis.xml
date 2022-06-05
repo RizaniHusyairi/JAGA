@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisActivity">
+    tools:context=".ui.RegisActivity">
 
 
     <LinearLayout
@@ -30,8 +30,8 @@
 
         <ImageView
             android:id="@+id/logo"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
             android:contentDescription="@string/logo"
@@ -59,30 +59,25 @@
 
 
         </com.google.android.material.textfield.TextInputLayout>
-<!--        <EditText-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center_horizontal"-->
-<!--            android:layout_marginTop="16dp"-->
-<!--            android:ems="15"-->
-<!--            android:hint="Masukkan Nomor HP"-->
-<!--            android:importantForAutofill="no"-->
-<!--            android:inputType="phone"-->
-<!--            android:minHeight="48dp"-->
-<!--            tools:ignore="SpeakableTextPresentCheck" />-->
 
-        <EditText
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/nama"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:layout_marginStart="40dp"
             android:layout_marginEnd="40dp"
-            android:layout_marginTop="10dp"
-            android:ems="15"
-            android:hint="Masukkan Nama Lengkap"
-            android:minHeight="48dp"
-            tools:ignore="SpeakableTextPresentCheck" />
+            android:hint="Nama">
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+
+
+        </com.google.android.material.textfield.TextInputLayout>
 
 
     </LinearLayout>
@@ -104,6 +99,7 @@
             android:layout_gravity="bottom"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
+            android:layout_marginBottom="7dp"
             android:background="@drawable/button_color"
             android:text="Daftar"
             android:onClick="onClickRegis"

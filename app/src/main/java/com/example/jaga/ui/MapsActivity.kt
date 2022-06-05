@@ -1,4 +1,4 @@
-package com.example.jaga
+package com.example.jaga.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -17,6 +17,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.jaga.GeofenceBroadcastReceiver
+import com.example.jaga.R
 import com.example.jaga.databinding.ActivityMapsBinding
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -72,6 +74,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         supportActionBar?.hide()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        binding.fab.setOnLongClickListener {
+
+            val intent = Intent(this@MapsActivity, RecordActivity::class.java)
+            startActivity(intent)
+            false
+        }
 
     }
 
@@ -238,23 +247,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         ) == PackageManager.PERMISSION_GRANTED
     }
 
-//    private fun getMyLocation() {
-//        if (ContextCompat.checkSelfPermission(
-//                this.applicationContext,
-//                Manifest.permission.ACCESS_FINE_LOCATION
-//            ) == PackageManager.PERMISSION_GRANTED
-//        ) {
-//            mMap.isMyLocationEnabled = true
-
-//        } else {
-//            requestPermissionLauncher.launch(
-//                arrayOf(
-//                    Manifest.permission.ACCESS_FINE_LOCATION,
-//                    Manifest.permission.ACCESS_COARSE_LOCATION
-//                ).toString()
-//            )
-//        }
-//    }
     @SuppressLint("MissingPermission")
     private fun getMyLocation() {
         if (checkForegroundAndBackgroundLocationPermission() && checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) {
@@ -272,14 +264,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     fun btnRecordPressed( v: View){
-        val intent: Intent = Intent(this,RecordActivity::class.java)
+        val intent: Intent = Intent(this, RecordActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun btnContact(item: MenuItem){
+        val intent: Intent = Intent(this, ContactActivity::class.java)
         startActivity(intent)
     }
 
     fun btnQuestionnaire(item: MenuItem) {
-        val intent: Intent = Intent(this,QuisionerActivity::class.java)
+        val intent: Intent = Intent(this, QuisionerActivity::class.java)
         startActivity(intent)
     }
+
 
 
     companion object{

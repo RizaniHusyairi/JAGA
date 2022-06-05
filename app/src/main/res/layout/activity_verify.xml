@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     android:overScrollMode="never"
     android:scrollbars="none"
-    tools:context=".VerifyActivity">
-    
+    tools:context=".ui.VerifyActivity">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,36 +19,34 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
             android:fontFamily="sans-serif"
+            android:text="@string/verifikasi_nomor_handphone"
             android:textColor="#000000"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="10dp"
-            android:text="@string/verifikasi_nomor_handphone" />
-        
+            android:textStyle="bold" />
+
         <com.airbnb.lottie.LottieAnimationView
             android:layout_width="200dp"
             android:layout_height="200dp"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
-            app:lottie_rawRes="@raw/mail_send_lottie_animation"
-            />
+            app:lottie_rawRes="@raw/mail_send_lottie_animation" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/masukkan_kode_otp"
-            
+
 
             />
-        
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="30dp"
             android:gravity="center"
-            >
+            android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/angka1"
@@ -61,8 +59,8 @@
                 android:maxLength="1"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                tools:ignore="LabelFor"
-                />
+                tools:ignore="LabelFor" />
+
             <EditText
                 android:id="@+id/angka2"
                 android:layout_width="40dp"
@@ -75,8 +73,7 @@
                 android:maxLength="1"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                tools:ignore="LabelFor"
-                />
+                tools:ignore="LabelFor" />
 
             <EditText
                 android:id="@+id/angka3"
@@ -90,8 +87,7 @@
                 android:maxLength="1"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                tools:ignore="LabelFor"
-                />
+                tools:ignore="LabelFor" />
 
             <EditText
                 android:id="@+id/angka4"
@@ -105,8 +101,8 @@
                 android:maxLength="1"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                tools:ignore="LabelFor"
-                />
+                tools:ignore="LabelFor" />
+
             <EditText
                 android:id="@+id/angka5"
                 android:layout_width="40dp"
@@ -119,8 +115,7 @@
                 android:maxLength="1"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                tools:ignore="LabelFor"
-                />
+                tools:ignore="LabelFor" />
 
             <EditText
                 android:id="@+id/angka6"
@@ -134,58 +129,85 @@
                 android:maxLength="1"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                tools:ignore="LabelFor"
-                />
-
-
-
-
+                tools:ignore="LabelFor" />
 
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:orientation="horizontal"
             android:gravity="center"
-            >
+            android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tidak Menerima OTP? "/>
+                android:text="Tidak Menerima Kode OTP? " />
 
             <TextView
                 android:id="@+id/kirim_ulang"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Kirim Ulang OTP"
-                android:layout_marginStart="8dp"
-                android:textColor="@color/blue_200"/>
+                android:layout_marginStart="5dp"
+                android:text="@string/kirim_ulang_otp"
+                android:textColor="#FD858484"
+                android:textStyle="bold" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" (" />
 
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="60" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=")" />
 
 
         </LinearLayout>
-        
-    <Button
-        android:id="@+id/btn_verifikasi"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/button_color"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginTop="40dp"
-        app:backgroundTint="@null"
-        android:text="@string/verifikasi"
-        android:textSize="18sp"
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            >
 
 
-        />
+            <Button
+                android:id="@+id/btn_verifikasi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button_color"
+                android:enabled="false"
+
+
+                android:text="@string/verifikasi"
+                android:textSize="18sp"
+                app:backgroundTint="@null" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+
+                style="?android:attr/progressBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:translationZ="12dp"
+                android:visibility="gone" />
+
+        </FrameLayout>
+
     </LinearLayout>
-
-
-
 
 
 </ScrollView>

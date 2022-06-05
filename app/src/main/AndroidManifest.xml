@@ -17,16 +17,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.JAGA">
         <activity
-            android:name=".ContactActivity"
+            android:name=".ui.ContactActivity"
             android:exported="false" />
         <activity
-            android:name=".RegisActivity"
+            android:name=".ui.RegisActivity"
             android:exported="false" />
         <activity
-            android:name=".VerifyActivity"
+            android:name=".ui.VerifyActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,13 +35,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SettingActivity"
+            android:name=".ui.SettingActivity"
             android:exported="false" />
         <activity
-            android:name=".QuisionerActivity"
+            android:name=".ui.QuisionerActivity"
             android:exported="false" />
         <activity
-            android:name=".RecordActivity"
+            android:name=".ui.RecordActivity"
             android:exported="false" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
@@ -59,7 +59,7 @@
             android:value="AIzaSyDMgbsI6qbpvxFvw3nqbreajeQhMtrJhrM" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".ui.MapsActivity"
             android:exported="false"
             android:label="@string/title_activity_maps" />
     </application>
