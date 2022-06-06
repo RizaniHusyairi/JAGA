@@ -64,7 +64,8 @@
         android:backgroundTint="@null"
         android:contentDescription="@string/btnmylocation"
         android:padding="10dp"
-        map:srcCompat="@drawable/ic_baseline_my_location_24" />
+        map:srcCompat="@drawable/ic_baseline_my_location_24"
+        tools:ignore="TouchTargetSizeCheck" />
 
 
     <ImageButton
@@ -79,7 +80,8 @@
         android:backgroundTint="@null"
         android:contentDescription="@string/btnmylocation"
         android:padding="10dp"
-        map:srcCompat="@drawable/ic_add" />
+        map:srcCompat="@drawable/ic_add"
+        tools:ignore="TouchTargetSizeCheck" />
 
     <ImageButton
         android:id="@+id/btn_setting"
@@ -93,22 +95,23 @@
         android:backgroundTint="@null"
         android:contentDescription="@string/btnmylocation"
         android:padding="10dp"
+        android:visibility="invisible"
         map:srcCompat="@drawable/ic_baseline_settings_24" />
 
-
     <ImageButton
-        android:id="@+id/btn_s"
+        android:id="@+id/btn_source"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="160dp"
         android:background="@drawable/button_item_color"
         android:backgroundTint="@null"
         android:contentDescription="@string/btnmylocation"
         android:padding="10dp"
-        map:srcCompat="@drawable/ic_baseline_settings_24" />
+        android:visibility="invisible"
+        map:srcCompat="@drawable/ic_baseline_source_24" />
 
 </RelativeLayout>
 

@@ -44,6 +44,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private val rotateClose: Animation by lazy { AnimationUtils.loadAnimation(this,R.anim.rotate_close_anim)}
     private val fromBottom: Animation by lazy { AnimationUtils.loadAnimation(this,R.anim.from_bottom_anim)}
     private val to_bottom: Animation by lazy { AnimationUtils.loadAnimation(this,R.anim.to_bottom_anim)}
+    private val clicked = false
+
 
     private val centerLat = -0.493349
     private val centerLng = 117.147487
@@ -93,14 +95,53 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         binding.fab.setOnLongClickListener {
-
             val intent = Intent(this@MapsActivity, RecordActivity::class.java)
             startActivity(intent)
             false
         }
-        binding.
 
+        binding.btnSetting.setOnClickListener {
+            showToast("ini Setting")
+        }
+
+        binding.btnSource.setOnClickListener {
+            showToast("ini penyimpanan")
+        }
+
+        binding.btnPlus.setOnClickListener{
+            onAddButtonCLicked()
+        }
     }
+
+    private fun onAddButtonCLicked(){
+        setVisibility(clicked)
+        setAnimation(clicked)
+        clicked = !clicked
+    }
+
+    private fun setVisibility(clicked: Boolean){
+        if(!clicked){
+            binding.btnSetting.visibility = View.VISIBLE
+            binding.btnSource.visibility = View.VISIBLE
+        }else{
+            binding.btnSetting.visibility = View.INVISIBLE
+            binding.btnSource.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun setAnimation(clicked: Boolean){
+        if(!clicked){
+            binding.btnSetting.startAnimation(fromBottom)
+            binding.btnSource.startAnimation(fromBottom)
+            binding.btnPlus.startAnimation(rotateOpen)
+        }else{
+            binding.btnSetting.startAnimation(to_Bottom)
+            binding.btnSource.startAnimation(to_Bottom)
+            binding.btnPlus.startAnimation(rotateClose)
+        }
+    }
+
+
 
 
     private fun isMicrophonePresent(): Boolean {

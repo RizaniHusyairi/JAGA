@@ -197,6 +197,8 @@ class VerifyActivity : AppCompatActivity() {
         })
 
 
+        binding.
+
 
         binding.btnVerifikasi.setOnClickListener {
             if (binding.angka1.text.toString().trim().isEmpty()
@@ -253,6 +255,9 @@ class VerifyActivity : AppCompatActivity() {
                     }
             }
         }
+
+
+
         binding.kirimUlang.setOnClickListener {
 
             sendOTP(nPhone)
