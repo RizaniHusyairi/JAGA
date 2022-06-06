@@ -14,7 +14,7 @@ import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class RecordActivity : AppCompatActivity() {
+class   RecordActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRecordBinding
     private lateinit var mediaRecorder: MediaRecorder

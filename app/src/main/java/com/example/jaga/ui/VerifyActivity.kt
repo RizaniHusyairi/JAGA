@@ -54,10 +54,7 @@ class VerifyActivity : AppCompatActivity() {
         if (nPhone[0] == '0') {
             nPhone = nPhone.drop(1)
         }
-
         nPhone = "+62$nPhone"
-
-
 
         mAuth = Firebase.auth
         setupViewModel()
@@ -70,7 +67,6 @@ class VerifyActivity : AppCompatActivity() {
             override fun onVerificationFailed(e: FirebaseException) {
                 binding.progressBar.visibility = View.GONE
                 binding.btnVerifikasi.isEnabled = true
-                Log.w(TAG, "onVerificationFailed", e)
                 Toast.makeText(this@VerifyActivity, "Error: ${e.message}", Toast.LENGTH_SHORT)
                     .show()
             }
@@ -81,13 +77,8 @@ class VerifyActivity : AppCompatActivity() {
                 token: PhoneAuthProvider.ForceResendingToken
             ) {
                 binding.progressBar.visibility = View.GONE
-            binding.btnVerifikasi.isEnabled = true
-                // The SMS verification code has been sent to the provided phone number, we
-                // now need to ask the user to enter the code and then construct a credential
-                // by combining the code with a verification ID.
-                Log.d(TAG, "onCodeSent:$verificationId")
+                binding.btnVerifikasi.isEnabled = true
 
-                // Save verification ID and resending token so we can use them later
                 storedVerificationId = verificationId
                 resendToken = token
             }
@@ -299,14 +290,15 @@ class VerifyActivity : AppCompatActivity() {
         object : CountDownTimer(duration, 1000) {
             @SuppressLint("ResourceAsColor")
             override fun onTick(p0: Long) {
-                binding.kirimUlang.setTextColor(R.color.gray_100)
+                binding.kirimUlang.setTextColor(R.color.blue_200)
+
                 binding.time.text = "${p0 / 1000}"
             }
 
 
             @SuppressLint("ResourceAsColor")
             override fun onFinish() {
-                binding.kirimUlang.setTextColor(R.color.blue_200)
+                binding.kirimUlang.setTextColor(R.color.gray_100)
 
             }
 

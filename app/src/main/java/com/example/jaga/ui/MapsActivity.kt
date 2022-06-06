@@ -12,6 +12,8 @@ import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -27,6 +29,8 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.shape.CornerFamily
+import com.google.android.material.shape.MaterialShapeDrawable
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -35,7 +39,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var binding: ActivityMapsBinding
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var geofencingClient: GeofencingClient
-
+    
+    private val rotateOpen: Animation by lazy { AnimationUtils.loadAnimation(this,R.anim.rotate_open_anim)}
+    private val rotateClose: Animation by lazy { AnimationUtils.loadAnimation(this,R.anim.rotate_close_anim)}
+    private val fromBottom: Animation by lazy { AnimationUtils.loadAnimation(this,R.anim.from_bottom_anim)}
+    private val to_bottom: Animation by lazy { AnimationUtils.loadAnimation(this,R.anim.to_bottom_anim)}
 
     private val centerLat = -0.493349
     private val centerLng = 117.147487
@@ -67,6 +75,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             Toast.makeText(applicationContext,isRecord,Toast.LENGTH_SHORT).show()
         }
 
+        val radius: Float = resources.getDimension(com.google.android.material.R.dimen.mtrl_bottomappbar_fab_cradle_rounded_corner_radius)
+
+        val bottomBarBackground: MaterialShapeDrawable = binding.bottomAppBar.background as MaterialShapeDrawable
+        bottomBarBackground.shapeAppearanceModel = bottomBarBackground.shapeAppearanceModel
+            .toBuilder()
+            .setTopRightCorner(CornerFamily.ROUNDED, radius)
+            .setTopLeftCorner(CornerFamily.ROUNDED, radius)
+            .build()
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
@@ -81,6 +98,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             startActivity(intent)
             false
         }
+        binding.
 
     }
 
@@ -88,6 +106,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun isMicrophonePresent(): Boolean {
         return this.packageManager.hasSystemFeature(PackageManager.FEATURE_MICROPHONE)
     }
+
     private fun getMicrophonePermission(){
         if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.RECORD_AUDIO)
             == PackageManager.PERMISSION_DENIED){
@@ -96,6 +115,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             )
         }
     }
+
 
     /**
      * Manipulates the map once available.
@@ -108,8 +128,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-
-
         getMyLocation()
         mMap.uiSettings.isMyLocationButtonEnabled = false
         if (isMicrophonePresent()){
@@ -123,11 +141,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
         val stanford = LatLng(centerLat, centerLng)
+        val stanford2 = LatLng(centerLat2, centerLng2)
+
 //        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(stanford, 15f))
 
         mMap.addCircle(
             CircleOptions()
                 .center(stanford)
+                .radius(geofenceRadius)
+                .fillColor(0x22FF0000)
+                .strokeColor(Color.RED)
+                .strokeWidth(3f)
+        )
+        mMap.addCircle(
+            CircleOptions()
+                .center(stanford2)
                 .radius(geofenceRadius)
                 .fillColor(0x22FF0000)
                 .strokeColor(Color.RED)
@@ -154,7 +182,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             .setLoiteringDelay(5000)
             .build()
         val geofence2 = Geofence.Builder()
-            .setRequestId("kampus")
+            .setRequestId("kampus2")
             .setCircularRegion(
                 centerLat2,
                 centerLng2,
