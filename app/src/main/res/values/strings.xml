@@ -25,4 +25,5 @@
     <string name="masukkan_kode_otp">Masukkan kode OTP</string>
     <string name="verifikasi">Verifikasi</string>
     <string name="kirim_ulang_otp">Kirim Ulang OTP</string>
+    <string name="pengaturan">Pengaturan</string>
 </resources>

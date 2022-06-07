@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jaga.Contact
+import com.example.jaga.R
 import com.example.jaga.databinding.ItemRowContactBinding
 
 class ListContactAdapter(private val listContact: ArrayList<Contact>) : RecyclerView.Adapter<ListContactAdapter.ViewHolder>() {
@@ -16,9 +17,17 @@ class ListContactAdapter(private val listContact: ArrayList<Contact>) : Recycler
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val contact = listContact[position]
-        holder.binding.tvName.text = contact.nama
-        holder.binding.tvNumber.text = contact.nomor
+        holder.binding.apply {
+            tvName.text = contact.nama
+            tvNumber.text = contact.nomor
+            btnLonceng.setOnClickListener {
+
+            }
+
+        }
     }
+
+
 
     override fun getItemCount(): Int {
         return listContact.size

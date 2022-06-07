@@ -52,17 +52,17 @@ class LoginActivity : AppCompatActivity() {
             }
             var alreadyLogin = false
             loginViewModel.getUser().observe(this) {
-                if (it.isLogin && it.number == "+62${nomor}") {
+                if ( it.number == "+62${nomor}") {
                     alreadyLogin = true
                     val iLogin = Intent(this@LoginActivity, MapsActivity::class.java)
                     startActivity(iLogin)
                     finish()
-                    return@observe
+
                 }
             }
             if (!alreadyLogin) {
 
-                db.reference.child(VerifyActivity.USERS).child("+62${nomor}")
+                db.reference.child(VerifyActivity.USERS).orderByChild("number").equalTo("+62${nomor}")
                     .addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             if (snapshot.exists()) {

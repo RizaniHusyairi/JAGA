@@ -44,7 +44,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private val rotateClose: Animation by lazy { AnimationUtils.loadAnimation(this,R.anim.rotate_close_anim)}
     private val fromBottom: Animation by lazy { AnimationUtils.loadAnimation(this,R.anim.from_bottom_anim)}
     private val to_bottom: Animation by lazy { AnimationUtils.loadAnimation(this,R.anim.to_bottom_anim)}
-    private val clicked = false
+    private var clicked = false
 
 
     private val centerLat = -0.493349
@@ -123,9 +123,16 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         if(!clicked){
             binding.btnSetting.visibility = View.VISIBLE
             binding.btnSource.visibility = View.VISIBLE
+            binding.btnSetting.isEnabled = false
+            binding.btnSource.isEnabled = false
+
         }else{
             binding.btnSetting.visibility = View.INVISIBLE
             binding.btnSource.visibility = View.INVISIBLE
+            binding.btnSetting.isEnabled = true
+            binding.btnSource.isEnabled = true
+
+
         }
     }
 
@@ -135,8 +142,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             binding.btnSource.startAnimation(fromBottom)
             binding.btnPlus.startAnimation(rotateOpen)
         }else{
-            binding.btnSetting.startAnimation(to_Bottom)
-            binding.btnSource.startAnimation(to_Bottom)
+            binding.btnSetting.startAnimation(to_bottom)
+            binding.btnSource.startAnimation(to_bottom)
             binding.btnPlus.startAnimation(rotateClose)
         }
     }
@@ -332,10 +339,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    fun btnRecordPressed( v: View){
-        val intent: Intent = Intent(this, RecordActivity::class.java)
-        startActivity(intent)
-    }
+
 
     fun btnContact(item: MenuItem){
         val intent: Intent = Intent(this, ContactActivity::class.java)

@@ -3,6 +3,7 @@ package com.example.jaga.ui
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -29,6 +30,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.streams.asSequence
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -197,7 +199,7 @@ class VerifyActivity : AppCompatActivity() {
         })
 
 
-        binding.
+        
 
 
         binding.btnVerifikasi.setOnClickListener {
@@ -233,11 +235,23 @@ class VerifyActivity : AppCompatActivity() {
                             val datauser = User(
                                 nPhone,
                                 nNama.toString(),
-                                true
+
                             )
 
                             verifyViewModel.login(datauser)
-                            userRef.child(nPhone).setValue(datauser)
+                            var iduser:String? = null
+                            val source = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                iduser = Random().ints(10, 0, source.length)
+                                    .asSequence()
+                                    .map(source::get)
+                                    .joinToString("")
+                            }
+                            if (iduser != null) {
+                                userRef.child(iduser).setValue(datauser)
+                            }else{
+                                Toast.makeText(this,"gagal menyimpan data user",Toast.LENGTH_SHORT).show()
+                            }
 
                             val intent = Intent(this, MapsActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
