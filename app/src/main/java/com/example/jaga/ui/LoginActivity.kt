@@ -50,45 +50,43 @@ class LoginActivity : AppCompatActivity() {
             } else {
                 binding.noHp.text
             }
-            var alreadyLogin = false
             loginViewModel.getUser().observe(this) {
                 if ( it.number == "+62${nomor}") {
-                    alreadyLogin = true
                     val iLogin = Intent(this@LoginActivity, MapsActivity::class.java)
                     startActivity(iLogin)
                     finish()
 
+                }else{
+                    db.reference.child(VerifyActivity.USERS).orderByChild("number").equalTo("+62${nomor}")
+                        .addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                if (snapshot.exists()) {
+                                    val iLogin = Intent(this@LoginActivity, VerifyActivity::class.java)
+
+                                    iLogin.putExtra(
+                                        VerifyActivity.NUMBER_PHONE,
+                                        binding.noHp.text.toString()
+                                    )
+                                    iLogin.putExtra(
+                                        VerifyActivity.NAME_USER,
+                                        snapshot.child("name").value.toString()
+                                    )
+                                    startActivity(iLogin)
+                                } else {
+                                    binding.noHp.error = "Nomor belum terdaftar"
+                                }
+                            }
+
+                            override fun onCancelled(error: DatabaseError) {
+                                Toast.makeText(this@LoginActivity, "Error: $error", Toast.LENGTH_LONG)
+                                    .show()
+                            }
+
+                        })
                 }
             }
-            if (!alreadyLogin) {
 
-                db.reference.child(VerifyActivity.USERS).orderByChild("number").equalTo("+62${nomor}")
-                    .addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onDataChange(snapshot: DataSnapshot) {
-                            if (snapshot.exists()) {
-                                val iLogin = Intent(this@LoginActivity, VerifyActivity::class.java)
 
-                                iLogin.putExtra(
-                                    VerifyActivity.NUMBER_PHONE,
-                                    binding.noHp.text.toString()
-                                )
-                                iLogin.putExtra(
-                                    VerifyActivity.NAME_USER,
-                                    snapshot.child("name").value.toString()
-                                )
-                                startActivity(iLogin)
-                            } else {
-                                binding.noHp.error = "Nomor belum terdaftar"
-                            }
-                        }
-
-                        override fun onCancelled(error: DatabaseError) {
-                            Toast.makeText(this@LoginActivity, "Error: $error", Toast.LENGTH_LONG)
-                                .show()
-                        }
-
-                    })
-            }
         }
 
     }

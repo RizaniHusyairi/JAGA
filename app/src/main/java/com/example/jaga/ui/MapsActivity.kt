@@ -77,13 +77,16 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             Toast.makeText(applicationContext,isRecord,Toast.LENGTH_SHORT).show()
         }
 
-        val radius: Float = resources.getDimension(com.google.android.material.R.dimen.mtrl_bottomappbar_fab_cradle_rounded_corner_radius)
+        val radius: Float = resources.getDimension(R.dimen.activity_horizontal_margin)
 
         val bottomBarBackground: MaterialShapeDrawable = binding.bottomAppBar.background as MaterialShapeDrawable
         bottomBarBackground.shapeAppearanceModel = bottomBarBackground.shapeAppearanceModel
             .toBuilder()
-            .setTopRightCorner(CornerFamily.ROUNDED, radius)
             .setTopLeftCorner(CornerFamily.ROUNDED, radius)
+            .setTopRightCorner(CornerFamily.ROUNDED, radius)
+            .setBottomRightCorner(CornerFamily.ROUNDED, radius)
+            .setBottomLeftCorner(CornerFamily.ROUNDED, radius)
+
             .build()
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.

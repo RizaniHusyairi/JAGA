@@ -16,7 +16,6 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
             User(
                 preference[NUMBER_KEY] ?: "",
                 preference[NAME_KEY] ?: "",
-                preference[STATE_KEY] ?: false,
             )
         }
     }
@@ -25,7 +24,6 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         dataStore.edit { preferences ->
             preferences[NUMBER_KEY] = user.number
             preferences[NAME_KEY] = user.name
-            preferences[STATE_KEY] = user.isLogin
         }
     }
 
@@ -43,7 +41,6 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
 
         private val NUMBER_KEY = stringPreferencesKey("number")
         private val NAME_KEY = stringPreferencesKey("name")
-        private val STATE_KEY = booleanPreferencesKey("isLogin")
 
         fun getInstance(dataStore: DataStore<androidx.datastore.preferences.core.Preferences>): UserPreference {
             return INSTANCE ?: synchronized(this) {

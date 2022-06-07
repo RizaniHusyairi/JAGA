@@ -272,8 +272,7 @@ class VerifyActivity : AppCompatActivity() {
 
 
 
-        binding.kirimUlang.setOnClickListener {
-
+        binding.kirimUlang.setOnClickListener{
             sendOTP(nPhone)
         }
 

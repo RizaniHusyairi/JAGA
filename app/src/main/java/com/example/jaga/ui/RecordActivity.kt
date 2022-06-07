@@ -14,6 +14,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.jaga.databinding.ActivityRecordBinding
 import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import java.io.File
@@ -37,6 +38,8 @@ class   RecordActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         supportActionBar?.hide()
+
+        mStorage = FirebaseStorage.getInstance().reference
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             fileName = getRecordingFilePath()

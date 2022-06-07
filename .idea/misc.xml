@@ -6,8 +6,8 @@
         <entry key="..\:/Kampus Merdeka/Capstone/JAGA/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.124" />
         <entry key="..\:/Kampus Merdeka/Capstone/JAGA/app/src/main/res/drawable/ic_baseline_surround_sound_24.xml" value="0.124" />
         <entry key="..\:/Kampus Merdeka/Capstone/JAGA/app/src/main/res/layout/activity_maps.xml" value="0.72" />
+        <entry key="..\:/Kampus Merdeka/Capstone/JAGA/app/src/main/res/layout/activity_setting.xml" value="0.11302083333333333" />
         <entry key="..\:/Kampus Merdeka/Capstone/JAGA/app/src/main/res/menu/bottom_nav_menu.xml" value="0.11302083333333333" />
-        <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/drawable/background_gradient.xml" value="0.1085" />
         <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/drawable/button_collor.xml" value="0.1015" />
         <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/drawable/button_color.xml" value="0.1015" />
         <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/drawable/button_item_color.xml" value="0.1085" />
@@ -15,9 +15,7 @@
         <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/drawable/ic_baseline_assignment_24.xml" value="0.1" />
         <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.124" />
         <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/drawable/ic_baseline_my_location_24.xml" value="0.1015" />
-        <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/drawable/ic_baseline_notifications_24.xml" value="0.1085" />
         <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/drawable/ic_baseline_notifications_active_24.xml" value="0.105" />
-        <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/drawable/ic_baseline_notifications_none_24.xml" value="0.1085" />
         <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/drawable/ic_baseline_perm_contact_calendar_24.xml" value="0.1" />
         <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.1085" />
         <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/drawable/ic_baseline_report_problem_24.xml" value="0.1085" />
@@ -35,10 +33,9 @@
         <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/layout/activity_record.xml" value="0.1" />
         <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/layout/activity_regis.xml" value="0.22" />
         <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/layout/activity_setting.xml" value="0.17074275362318841" />
-        <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/layout/activity_source.xml" value="0.1453125" />
         <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/layout/activity_verify.xml" value="0.18" />
         <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/layout/item_row_ask.xml" value="0.33" />
-        <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/layout/item_row_contact.xml" value="0.33" />
+        <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/layout/item_row_contact.xml" value="0.17074275362318841" />
         <entry key="..\:/script/AndroidStudio/Latihan_Android_Intermediate/JAGA/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1" />
       </map>
     </option>
