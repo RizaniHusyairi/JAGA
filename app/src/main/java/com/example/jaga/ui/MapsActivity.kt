@@ -104,7 +104,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         binding.btnSetting.setOnClickListener {
-            showToast("ini Setting")
+            val profilPage = Intent(this@MapsActivity,SettingActivity::class.java)
+            startActivity(profilPage)
         }
 
         binding.btnSource.setOnClickListener {
@@ -359,6 +360,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     companion object{
         private const val MICROPHONE_PERMISSION_CODE = 200
         const val SUCCESS_RECORD = "success_record"
+
     }
 
 

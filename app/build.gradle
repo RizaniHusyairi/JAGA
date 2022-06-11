@@ -68,8 +68,10 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:30.1.0')
     implementation 'com.google.firebase:firebase-common-ktx:20.1.1'
     implementation 'com.google.firebase:firebase-database-ktx:20.0.5'
+    implementation 'com.google.firebase:firebase-appcheck-safetynet:16.0.0'
     implementation 'com.firebaseui:firebase-ui-database:8.0.0'
     implementation 'com.google.firebase:firebase-storage-ktx:20.0.1'
+    implementation 'com.firebaseui:firebase-ui-storage:7.2.0'
 
 
     testImplementation 'junit:junit:4.13.2'

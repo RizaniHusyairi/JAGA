@@ -2,6 +2,7 @@ package com.example.jaga.ui
 
 import android.annotation.SuppressLint
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.media.MediaRecorder
@@ -12,32 +13,48 @@ import android.os.Environment
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.ViewModelProvider
+import com.example.jaga.LoginViewModel
+import com.example.jaga.UserPreference
+import com.example.jaga.ViewModelFactory
 import com.example.jaga.databinding.ActivityRecordBinding
-import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.UploadTask
 import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
+
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class   RecordActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRecordBinding
     private lateinit var mediaRecorder: MediaRecorder
     private lateinit var mStorage: StorageReference
+    private lateinit var recordViewModel: LoginViewModel
+    private lateinit var db:FirebaseDatabase
 
     private lateinit var mProgress: ProgressDialog
 
     private var fileName: String? = null
 
+    var id:String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRecordBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        setupViewModel()
         supportActionBar?.hide()
+
+        recordViewModel.getUser().observe(this){
+            id = it.id
+        }
 
         mStorage = FirebaseStorage.getInstance().reference
 
@@ -85,16 +102,32 @@ class   RecordActivity : AppCompatActivity() {
     private fun uploadAudio() {
         mProgress.setMessage("Uploading Audio..")
         mProgress.show()
+
         val d = LocalDateTime.now()
-
-
         val s = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
         val formatted = d.format(s)
-        val filePath = mStorage.child("Audio").child("case_$formatted.mp3")
+        val filePath = mStorage.child("$id/Audio").child("case_$formatted.mp3")
         val uri:Uri = Uri.fromFile(File(fileName))
 
-        filePath.putFile(uri).addOnSuccessListener { mProgress.dismiss() }
+        filePath.putFile(uri).addOnSuccessListener {
+            mProgress.dismiss()
+            val url: String = filePath.downloadUrl.toString()
+            val name:String? = it.metadata?.name
 
+
+
+
+
+
+
+        }
+
+    }
+    private fun setupViewModel() {
+        recordViewModel = ViewModelProvider(
+            this,
+            ViewModelFactory(UserPreference.getInstance(dataStore))
+        )[LoginViewModel::class.java]
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

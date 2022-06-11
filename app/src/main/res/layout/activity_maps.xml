@@ -101,7 +101,7 @@
         android:contentDescription="@string/btnmylocation"
         android:padding="10dp"
         android:visibility="invisible"
-        map:srcCompat="@drawable/ic_baseline_settings_24" />
+        map:srcCompat="@drawable/ic_baseline_person_24" />
 
     <ImageButton
         android:id="@+id/btn_source"

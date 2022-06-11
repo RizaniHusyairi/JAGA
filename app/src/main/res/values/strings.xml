@@ -3,7 +3,7 @@
     <string name="title_activity_maps">MapsActivity</string>
     <string name="sedang_merekam_suara">Sedang Merekam Suara...</string>
     <string name="stop_rekam_suara">STOP REKAM SUARA</string>
-    <string name="ini_kuisioner">Ini Kuisioner (Cooming Soon)</string>
+    <string name="ini_kuisioner">(Cooming Soon)</string>
     <string name="btnmylocation">btnMyLocation</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="prompt_email">Email</string>
@@ -20,10 +20,17 @@
     <string name="dummy_ask">Apakah kamu mengalami intimidasi, penghinaan, direndahkan, atau dipermalukan ?</string>
     <string name="verifikasi_nomor_handphone">Verifikasi Nomor HandPhone</string>
     <string name="_62">+62</string>
-    <string name="_81258279283">81258279283</string>
+    <string name="_81258279283">81234567891</string>
     <string name="or">Atau</string>
     <string name="masukkan_kode_otp">Masukkan kode OTP</string>
     <string name="verifikasi">Verifikasi</string>
     <string name="kirim_ulang_otp">Kirim Ulang OTP</string>
     <string name="pengaturan">Pengaturan</string>
+    <string name="nama_user">Nama User</string>
+    <string name="_08123456789">08123456789</string>
+    <string name="profile">Profil</string>
+    <string name="tentang_kamu">Tentang kamu....</string>
+    <string name="_12_12_2012">12-12-2012</string>
+    <string name="daftar">Daftar</string>
+    <string name="case_12344556">case_12344556</string>
 </resources>

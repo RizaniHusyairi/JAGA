@@ -45,6 +45,8 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:prefixText="+62"
+            app:startIconDrawable="@drawable/ic_baseline_add_ic_call_24"
             android:layout_marginTop="16dp"
             android:layout_marginStart="40dp"
             android:layout_marginEnd="40dp"
@@ -62,6 +64,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/nama"
+            app:startIconDrawable="@drawable/ic_fa_solid_user"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -97,11 +100,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
             android:layout_marginBottom="7dp"
             android:background="@drawable/button_color"
-            android:text="Daftar"
+            android:text="@string/daftar"
             android:onClick="onClickRegis"
             android:textSize="18sp"
             app:backgroundTint="@null" />
@@ -117,6 +120,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:text="Sudah Punya Akun?" />
 
             <TextView

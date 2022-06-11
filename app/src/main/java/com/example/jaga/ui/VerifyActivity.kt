@@ -43,6 +43,7 @@ class VerifyActivity : AppCompatActivity() {
     private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
     private lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
     private lateinit var verifyViewModel: LoginViewModel
+    private var reSend = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,6 +53,8 @@ class VerifyActivity : AppCompatActivity() {
 
 
         var nPhone = intent.getStringExtra(NUMBER_PHONE).toString()
+        val nNama = intent.getStringExtra(NAME_USER)
+        val id = intent.getStringExtra(ID_USER)
 
         if (nPhone[0] == '0') {
             nPhone = nPhone.drop(1)
@@ -88,7 +91,6 @@ class VerifyActivity : AppCompatActivity() {
         }
 
 
-        val nNama = intent.getStringExtra(NAME_USER)
 
         sendOTP(nPhone)
 
@@ -199,7 +201,7 @@ class VerifyActivity : AppCompatActivity() {
         })
 
 
-        
+
 
 
         binding.btnVerifikasi.setOnClickListener {
@@ -230,28 +232,40 @@ class VerifyActivity : AppCompatActivity() {
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
                             db = Firebase.database
-
                             val userRef = db.reference.child(USERS)
-                            val datauser = User(
-                                nPhone,
-                                nNama.toString(),
+                            var datauser: User
+                            if (nNama?.isEmpty() == false) {
 
-                            )
-
-                            verifyViewModel.login(datauser)
-                            var iduser:String? = null
-                            val source = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                iduser = Random().ints(10, 0, source.length)
-                                    .asSequence()
-                                    .map(source::get)
-                                    .joinToString("")
-                            }
-                            if (iduser != null) {
+                                var iduser: String? = null
+                                val source = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                    iduser = Random().ints(10, 0, source.length)
+                                        .asSequence()
+                                        .map(source::get)
+                                        .joinToString("")
+                                }
+                                datauser = User(
+                                    iduser!!,
+                                    nPhone,
+                                    nNama,
+                                )
                                 userRef.child(iduser).setValue(datauser)
-                            }else{
-                                Toast.makeText(this,"gagal menyimpan data user",Toast.LENGTH_SHORT).show()
+                            } else {
+
+                                val temp = userRef.child(id!!)
+                                datauser = User(
+                                    id,
+                                    nPhone,
+                                    nNama,
+                                    temp.child("tgl_lahir").toString(),
+                                    temp.child("tentang").toString()
+
+                                )
+
+                                Log.e("data",datauser.toString())
+
                             }
+                            verifyViewModel.login(datauser)
 
                             val intent = Intent(this, MapsActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -272,8 +286,10 @@ class VerifyActivity : AppCompatActivity() {
 
 
 
-        binding.kirimUlang.setOnClickListener{
-            sendOTP(nPhone)
+        binding.kirimUlang.setOnClickListener {
+            if (reSend!!) {
+                sendOTP(nPhone)
+            }
         }
 
 
@@ -309,6 +325,7 @@ class VerifyActivity : AppCompatActivity() {
             @SuppressLint("ResourceAsColor")
             override fun onTick(p0: Long) {
                 binding.kirimUlang.setTextColor(R.color.blue_200)
+                reSend = true
 
                 binding.time.text = "${p0 / 1000}"
             }
@@ -316,6 +333,7 @@ class VerifyActivity : AppCompatActivity() {
 
             @SuppressLint("ResourceAsColor")
             override fun onFinish() {
+                reSend = false
                 binding.kirimUlang.setTextColor(R.color.gray_100)
 
             }
@@ -326,6 +344,7 @@ class VerifyActivity : AppCompatActivity() {
     companion object {
         const val NUMBER_PHONE = "number_phone"
         const val NAME_USER = "name_user"
+        const val ID_USER = "id_user"
 
         private const val TAG = "PhoneAuthActivity"
         const val USERS = "users"

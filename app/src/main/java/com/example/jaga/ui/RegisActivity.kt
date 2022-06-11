@@ -43,7 +43,7 @@ class RegisActivity : AppCompatActivity() {
             }else{
                 binding.noHp.editText?.text.toString()
             }
-            db.reference.child(VerifyActivity.USERS).child("+62${nomor}").addListenerForSingleValueEvent(object:
+            db.reference.child(VerifyActivity.USERS).orderByChild("number").equalTo("+62${nomor}").addListenerForSingleValueEvent(object:
                 ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()){

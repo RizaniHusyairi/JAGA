@@ -68,8 +68,8 @@ class LoginActivity : AppCompatActivity() {
                                         binding.noHp.text.toString()
                                     )
                                     iLogin.putExtra(
-                                        VerifyActivity.NAME_USER,
-                                        snapshot.child("name").value.toString()
+                                        VerifyActivity.ID_USER,
+                                        snapshot.child("id").toString()
                                     )
                                     startActivity(iLogin)
                                 } else {

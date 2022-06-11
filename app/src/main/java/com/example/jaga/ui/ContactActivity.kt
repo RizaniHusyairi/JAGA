@@ -2,6 +2,7 @@ package com.example.jaga.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
@@ -31,8 +32,15 @@ class ContactActivity : AppCompatActivity() {
         binding.rvContact.setHasFixedSize(true)
         supportActionBar?.hide()
 
+
         checkPermission()
 
+
+        binding.btnBack.setOnClickListener {
+            val back = Intent(this,MapsActivity::class.java)
+            startActivity(back)
+            finish()
+        }
     }
 
     private fun checkPermission(){
