@@ -4,12 +4,14 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.Animation
@@ -19,7 +21,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.jaga.GeofenceBroadcastReceiver
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.ViewModelProvider
+import com.example.jaga.*
 import com.example.jaga.R
 import com.example.jaga.databinding.ActivityMapsBinding
 import com.google.android.gms.location.*
@@ -31,7 +37,11 @@ import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -39,7 +49,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var binding: ActivityMapsBinding
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var geofencingClient: GeofencingClient
-    
+    private lateinit var mapsViewModel: LoginViewModel
+    private lateinit var dbFirestore: FirebaseFirestore
+    private val data= ArrayList<ZoneDanger>()
+
     private val rotateOpen: Animation by lazy { AnimationUtils.loadAnimation(this,R.anim.rotate_open_anim)}
     private val rotateClose: Animation by lazy { AnimationUtils.loadAnimation(this,R.anim.rotate_close_anim)}
     private val fromBottom: Animation by lazy { AnimationUtils.loadAnimation(this,R.anim.from_bottom_anim)}
@@ -69,9 +82,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        setupViewModel()
         binding.bottomNavigasiView.background = null
-
+        mapsViewModel.getUser().observe(this){
+            iduser = it.id
+        }
         val isRecord = intent.getStringExtra(SUCCESS_RECORD)
         if(isRecord?.isEmpty() == false){
             Toast.makeText(applicationContext,isRecord,Toast.LENGTH_SHORT).show()
@@ -99,8 +114,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         binding.fab.setOnLongClickListener {
             val intent = Intent(this@MapsActivity, RecordActivity::class.java)
-            startActivity(intent)
+            if (checkForegroundAndBackgroundLocationPermission() && checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                mMap.isMyLocationEnabled = true
+                fusedLocationClient.lastLocation.addOnSuccessListener { location:Location? ->
+                    if (location != null){
+                        intent.putExtra(RecordActivity.LATITUDE,location.latitude)
+                        intent.putExtra(RecordActivity.LONGITUDE,location.longitude)
+                        startActivity(intent)
+                    }
+                }
+            } else {
+                requestLocationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            }
             false
+
+
         }
 
         binding.btnSetting.setOnClickListener {
@@ -109,7 +137,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         binding.btnSource.setOnClickListener {
-            showToast("ini penyimpanan")
+            val sourcePage = Intent(this@MapsActivity,SourceActivity::class.java)
+            startActivity(sourcePage)
         }
 
         binding.btnPlus.setOnClickListener{
@@ -127,17 +156,23 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         if(!clicked){
             binding.btnSetting.visibility = View.VISIBLE
             binding.btnSource.visibility = View.VISIBLE
-            binding.btnSetting.isEnabled = false
-            binding.btnSource.isEnabled = false
+            binding.btnSetting.isEnabled = true
+            binding.btnSource.isEnabled = true
 
         }else{
             binding.btnSetting.visibility = View.INVISIBLE
             binding.btnSource.visibility = View.INVISIBLE
-            binding.btnSetting.isEnabled = true
-            binding.btnSource.isEnabled = true
+            binding.btnSetting.isEnabled = false
+            binding.btnSource.isEnabled = false
 
 
         }
+    }
+    private fun setupViewModel() {
+        mapsViewModel = ViewModelProvider(
+            this,
+            ViewModelFactory(UserPreference.getInstance(dataStore))
+        )[LoginViewModel::class.java]
     }
 
     private fun setAnimation(clicked: Boolean){
@@ -181,6 +216,37 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         getMyLocation()
+
+        dbFirestore = Firebase.firestore
+
+        dbFirestore.collection("datajaga9").get().addOnSuccessListener { it ->
+
+
+            it.documents.forEach { doc ->
+                val temp = doc.toObject(ZoneDanger::class.java)
+                if (temp != null) {
+                    data.add(temp)
+                }
+            }
+
+            data.forEach { zone ->
+                val stanford = LatLng( zone.y!!,zone.x!!)
+                mMap.addCircle(
+                    CircleOptions()
+                        .center(stanford)
+                        .radius(geofenceRadius)
+                        .fillColor(0x22FF0000)
+                        .strokeColor(Color.RED)
+                        .strokeWidth(3f)
+                )
+                addGeofence(zone.y!!,zone.x!!, )
+                Log.e("tesdata",zone.toString())
+            }
+
+                Log.e("tesdata2",data[1].x.toString())
+
+        }
+
         mMap.uiSettings.isMyLocationButtonEnabled = false
         if (isMicrophonePresent()){
             getMicrophonePermission()
@@ -192,90 +258,46 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
 
-        val stanford = LatLng(centerLat, centerLng)
         val stanford2 = LatLng(centerLat2, centerLng2)
 
-//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(stanford, 15f))
-
-        mMap.addCircle(
-            CircleOptions()
-                .center(stanford)
-                .radius(geofenceRadius)
-                .fillColor(0x22FF0000)
-                .strokeColor(Color.RED)
-                .strokeWidth(3f)
-        )
-        mMap.addCircle(
-            CircleOptions()
-                .center(stanford2)
-                .radius(geofenceRadius)
-                .fillColor(0x22FF0000)
-                .strokeColor(Color.RED)
-                .strokeWidth(3f)
-        )
 
         getMyLocation()
-        addGeofence()
 
     }
 
     @SuppressLint("MissingPermission")
-    private fun addGeofence() {
+    private fun addGeofence(x:Double, y:Double) {
         geofencingClient = LocationServices.getGeofencingClient(this)
         val geofence = Geofence.Builder()
             .setRequestId("kampus")
             .setCircularRegion(
-                centerLat,
-                centerLng,
+                x,
+                y,
                 geofenceRadius.toFloat()
             )
             .setExpirationDuration(Geofence.NEVER_EXPIRE)
             .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_DWELL or Geofence.GEOFENCE_TRANSITION_ENTER)
             .setLoiteringDelay(5000)
             .build()
-        val geofence2 = Geofence.Builder()
-            .setRequestId("kampus2")
-            .setCircularRegion(
-                centerLat2,
-                centerLng2,
-                geofenceRadius.toFloat()
-            )
-            .setExpirationDuration(Geofence.NEVER_EXPIRE)
-            .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_DWELL or Geofence.GEOFENCE_TRANSITION_ENTER)
-            .setLoiteringDelay(5000)
-            .build()
+
         val geofencingRequest = GeofencingRequest.Builder()
             .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
             .addGeofence(geofence)
             .build()
-        val geofencingRequest2 = GeofencingRequest.Builder()
-            .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
-            .addGeofence(geofence2)
-            .build()
+
         geofencingClient.removeGeofences(geofencePendingIntent).run {
             addOnCompleteListener {
                 geofencingClient.addGeofences(geofencingRequest, geofencePendingIntent).run {
                     addOnSuccessListener {
-                        showToast("Geofencing added")
+//                        showToast("Geofencing added")
                     }
                     addOnFailureListener {
-                        showToast("Geofencing not added : ${it.message}")
+//                        showToast("Geofencing not added : ${it.message}")
                     }
                 }
             }
         }
-        geofencingClient.removeGeofences(geofencePendingIntent).run {
-            addOnCompleteListener {
-                geofencingClient.addGeofences(geofencingRequest2, geofencePendingIntent).run {
-                    addOnSuccessListener {
-                        showToast("Geofencing added")
-                    }
-                    addOnFailureListener {
-                        showToast("Geofencing not added : ${it.message}")
-                    }
-                }
-            }
-        }
+
     }
 
     private fun showToast(text: String) {
@@ -360,6 +382,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     companion object{
         private const val MICROPHONE_PERMISSION_CODE = 200
         const val SUCCESS_RECORD = "success_record"
+        var iduser:String? = null
 
     }
 

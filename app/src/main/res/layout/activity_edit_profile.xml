@@ -119,6 +119,7 @@
             android:textColorHint="@color/white"
             app:boxBackgroundColor="#6E0146"
             app:boxStrokeColor="@color/white"
+            android:clickable="false"
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -130,6 +131,10 @@
                 android:id="@+id/tgl_lahir_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:cursorVisible="false"
                 android:inputType="text"
                 android:textColor="@color/white" />
 

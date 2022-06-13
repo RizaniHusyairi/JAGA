@@ -19,18 +19,18 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
                 preference[TENTANG_KEY] ?: "" ,
                 preference[FOTO_KEY] ?: ""
 
-                )
+            )
         }
     }
 
     suspend fun signIn(user: User) {
         dataStore.edit { preferences ->
-            preferences[USER_KEY] = user.id!!
-            preferences[NUMBER_KEY] = user.number!!
-            preferences[NAMA_KEY] = user.name!!
-            preferences[TGL_KEY] = user.tgl_lahir!!
-            preferences[TENTANG_KEY] = user.tentang!!
-            preferences[FOTO_KEY] = user.foto!!
+            preferences[USER_KEY] = user.id ?: ""
+            preferences[NUMBER_KEY] = user.number ?: ""
+            preferences[NAMA_KEY] = user.name ?: ""
+            preferences[TGL_KEY] = user.tgl_lahir ?: ""
+            preferences[TENTANG_KEY] = user.tentang ?: ""
+            preferences[FOTO_KEY] = user.foto ?: ""
         }
     }
 

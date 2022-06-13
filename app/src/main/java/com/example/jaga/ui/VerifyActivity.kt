@@ -25,11 +25,13 @@ import com.example.jaga.databinding.ActivityVerifyBinding
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.math.log
 import kotlin.streams.asSequence
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -54,7 +56,8 @@ class VerifyActivity : AppCompatActivity() {
 
         var nPhone = intent.getStringExtra(NUMBER_PHONE).toString()
         val nNama = intent.getStringExtra(NAME_USER)
-        val id = intent.getStringExtra(ID_USER)
+        val id = intent.getStringExtra(ID_USER).toString()
+        Log.e("iduser",id)
 
         if (nPhone[0] == '0') {
             nPhone = nPhone.drop(1)
@@ -233,6 +236,7 @@ class VerifyActivity : AppCompatActivity() {
                         if (it.isSuccessful) {
                             db = Firebase.database
                             val userRef = db.reference.child(USERS)
+                            Log.e("ref",userRef.toString())
                             var datauser: User
                             if (nNama?.isEmpty() == false) {
 
@@ -248,24 +252,45 @@ class VerifyActivity : AppCompatActivity() {
                                     iduser!!,
                                     nPhone,
                                     nNama,
+                                    null,
+                                    null,
+                                    null
                                 )
                                 userRef.child(iduser).setValue(datauser)
+                                verifyViewModel.login(datauser)
+
                             } else {
+                                var name: String?
+                                var tgl: String?
+                                var tentang: String?
+                                var foto:String? = null
+                                db.reference.child("users").child(id).get()
+                                    .addOnSuccessListener {
 
-                                val temp = userRef.child(id!!)
-                                datauser = User(
-                                    id,
-                                    nPhone,
-                                    nNama,
-                                    temp.child("tgl_lahir").toString(),
-                                    temp.child("tentang").toString()
+                                        if (it.exists()) {
+                                            name = it.child("name").value.toString()
+                                            tgl = it.child("tgl_lahir").value.toString()
+                                            tentang = it.child("tentang").value.toString()
+                                            foto = it.child("foto").value.toString()
+                                            verifyViewModel.login(User(
+                                                id,
+                                                nPhone,
+                                                name,
+                                                tgl,
+                                                tentang,
+                                                foto
+                                            )
+                                            )
+                                        }
+                                    }.addOnFailureListener{ error ->
+                                            Toast.makeText(this@VerifyActivity,"Error : ${error.message}",Toast.LENGTH_SHORT).show()
+                                    }
 
-                                )
 
-                                Log.e("data",datauser.toString())
+
+
 
                             }
-                            verifyViewModel.login(datauser)
 
                             val intent = Intent(this, MapsActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK

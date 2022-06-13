@@ -42,7 +42,7 @@ class SettingActivity : AppCompatActivity() {
             id_user = it.id
             storageReference = FirebaseStorage.getInstance().getReference(it.id!!)
 
-            if (it.foto == null) {
+            if (it.foto?.isEmpty() == true) {
                 Glide.with(this)
                     .load(R.drawable.foto_default)
                     .circleCrop()
@@ -84,6 +84,7 @@ class SettingActivity : AppCompatActivity() {
             }
 
             binding.apply {
+                numberUser.text = it.number
                 nameUser.text = it.name
                 if (tglLahir.text == null) {
                     imageView4.visibility = View.INVISIBLE
@@ -130,6 +131,10 @@ class SettingActivity : AppCompatActivity() {
             create()
             show()
         }
+    }
+    fun btnUpdate(v:View){
+        val d = Intent(this, EditProfileActivity::class.java)
+        startActivity(d)
     }
 
     companion object {

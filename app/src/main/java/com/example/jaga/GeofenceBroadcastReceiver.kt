@@ -17,14 +17,16 @@ class GeofenceBroadcastReceiver : BroadcastReceiver() {
         if (intent.action == ACTION_GEOFENCE_EVENT) {
             val geofencingEvent = GeofencingEvent.fromIntent(intent)
 
-            if (geofencingEvent.hasError()) {
-                val errorMessage = GeofenceStatusCodes.getStatusCodeString(geofencingEvent.errorCode)
-                Log.e(TAG, errorMessage)
-                sendNotification(context, errorMessage)
-                return
+            if (geofencingEvent != null) {
+                if (geofencingEvent.hasError()) {
+                    val errorMessage = GeofenceStatusCodes.getStatusCodeString(geofencingEvent.errorCode)
+                    Log.e(TAG, errorMessage)
+                    sendNotification(context, errorMessage)
+                    return
+                }
             }
 
-            val geofenceTransition = geofencingEvent.geofenceTransition
+            val geofenceTransition = geofencingEvent?.geofenceTransition
 
             if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER || geofenceTransition == Geofence.GEOFENCE_TRANSITION_DWELL) {
                 val geofenceTransitionString =
@@ -35,7 +37,7 @@ class GeofenceBroadcastReceiver : BroadcastReceiver() {
                     }
 
                 val triggeringGeofences = geofencingEvent.triggeringGeofences
-                val requestId = triggeringGeofences[0].requestId
+                val requestId = triggeringGeofences?.get(0)?.requestId
 
                 val geofenceTransitionDetails = "$geofenceTransitionString $requestId"
                 Log.i(TAG, geofenceTransitionDetails)

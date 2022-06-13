@@ -10,4 +10,4 @@ data class User(
     var tentang: String? = null,
     var foto:String? =null,
 
-)
+    )

@@ -2,6 +2,7 @@ package com.example.jaga.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
@@ -10,18 +11,32 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.jaga.Contact
+import com.example.jaga.*
 import com.example.jaga.databinding.ActivityContactBinding
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class ContactActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityContactBinding
+    private lateinit var binding: ActivityContactBinding
     private val list = ArrayList<Contact>()
+    private lateinit var db: FirebaseDatabase
+    private lateinit var contactViewModel: LoginViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,101 +46,99 @@ class ContactActivity : AppCompatActivity() {
 
         binding.rvContact.setHasFixedSize(true)
         supportActionBar?.hide()
+        db = Firebase.database
+        setupViewModel()
 
 
-        checkPermission()
 
+        binding.btnAdd.setOnClickListener {
+            val a = Intent(this, AddContactActivity::class.java)
+            startActivity(a)
+        }
 
         binding.btnBack.setOnClickListener {
-            val back = Intent(this,MapsActivity::class.java)
+            val back = Intent(this, MapsActivity::class.java)
             startActivity(back)
             finish()
         }
+        getContactList()
     }
 
-    private fun checkPermission(){
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this,arrayOf(Manifest.permission.READ_CONTACTS),100)
-        }else{
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                getContactList()
-            }
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    @SuppressLint("Range")
     private fun getContactList() {
-        val uri: Uri = ContactsContract.Contacts.CONTENT_URI
-        val sort:String = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME+" ASC"
-
-        val cursor : Cursor? = contentResolver.query(
-            uri, null, null  ,null,sort
-        )
-
-        if (cursor != null) {
-            if (cursor.count>0){
-                while (cursor.moveToNext()){
-                    val id:String? = cursor.getString(cursor.getColumnIndex(
-                        ContactsContract.Contacts._ID
-                    ))
-                    val name:String? = cursor.getString(cursor.getColumnIndex(
-                        ContactsContract.Contacts.DISPLAY_NAME
-                    ))
-                    val uriPhone: Uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI
-                    val selection: String = ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " =?"
-
-                    val phoneCursor: Cursor? = contentResolver.query(
-                        uriPhone,null,selection, arrayOf(id),null
+        db.reference.child("users").child(MapsActivity.iduser!!).child("contact")
+            .get().addOnSuccessListener {
+                it.children.forEach { dataContact ->
+                    val temp = Contact(
+                        dataContact.key.toString(),
+                        dataContact.child("nama").value.toString(),
+                        dataContact.child("nomor").value.toString()
                     )
+                    Log.e("kontak", dataContact.value.toString())
+                    list.add(temp)
 
-                    if (phoneCursor != null) {
-                        if(phoneCursor.moveToNext()){
-                            val number: String? = phoneCursor.getString(phoneCursor.getColumnIndex(
-                                ContactsContract.CommonDataKinds.Phone.NUMBER
-                            ))
-                            val model = Contact()
+                }
 
-                            model.nama= name
-                            model.nomor=number
-                            list.add(model)
+            }.addOnCompleteListener {
 
-                            phoneCursor.close()
+                if (list.isEmpty()) {
+                    binding.isTextNull.visibility = View.VISIBLE
+                } else {
+                    binding.isTextNull.visibility = View.INVISIBLE
 
+                    val contactAdabter = ListContactAdapter(list)
+                    contactAdabter.setOnItemClickCallback(object :
+                        ListContactAdapter.OnItemClickCallback {
+                        override fun onItemClicked(data: Contact) {
+                            btn_deleted(data)
+                        }
+
+                        override fun onUpdateClicked(data: Contact) {
 
                         }
-                    }
 
+                    })
+                    binding.rvContact.apply {
+                        layoutManager = LinearLayoutManager(this@ContactActivity)
+                        setHasFixedSize(true)
+                        adapter = contactAdabter
+                    }
 
                 }
             }
-            cursor.close()
-        }
-        binding.rvContact.layoutManager = LinearLayoutManager(this)
-        val adapter = ListContactAdapter(list)
-        binding.rvContact.adapter = adapter
+
 
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if(requestCode == 100 && grantResults.size>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+    fun btn_deleted(data: Contact) {
+        AlertDialog.Builder(this).apply {
+            setTitle("Hapus Kontak")
+            setMessage("Apa kamu yakin menghapus kotak ini?")
+            setPositiveButton("Yes") { _, _ ->
+                Log.e("data-id", data.toString())
+                db.reference.child("users").child(MapsActivity.iduser!!).child("contact")
+                    .child(data.id!!).removeValue().addOnSuccessListener {
+                    Toast.makeText(
+                        this@ContactActivity,
+                        "Kontak Berhasil Dihapus",
+                        Toast.LENGTH_SHORT
+                    )
+                }
                 getContactList()
             }
-        }else{
-            Toast.makeText(this,"Permission Denied",Toast.LENGTH_SHORT).show()
-            checkPermission()
+            setNegativeButton("No") { _, _ ->
+
+            }
+            create()
+            show()
         }
-
-
     }
 
-
+    private fun setupViewModel() {
+        contactViewModel = ViewModelProvider(
+            this,
+            ViewModelFactory(UserPreference.getInstance(dataStore))
+        )[LoginViewModel::class.java]
+    }
 
 
 }

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.datastore.core.DataStore
@@ -35,6 +36,8 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
         setupViewModel()
 
+        val notif = resources
+
 
         supportActionBar?.hide()
     }
@@ -50,41 +53,42 @@ class LoginActivity : AppCompatActivity() {
             } else {
                 binding.noHp.text
             }
-            loginViewModel.getUser().observe(this) {
-                if ( it.number == "+62${nomor}") {
-                    val iLogin = Intent(this@LoginActivity, MapsActivity::class.java)
-                    startActivity(iLogin)
-                    finish()
 
-                }else{
-                    db.reference.child(VerifyActivity.USERS).orderByChild("number").equalTo("+62${nomor}")
-                        .addListenerForSingleValueEvent(object : ValueEventListener {
-                            override fun onDataChange(snapshot: DataSnapshot) {
-                                if (snapshot.exists()) {
-                                    val iLogin = Intent(this@LoginActivity, VerifyActivity::class.java)
+            db.reference.child(VerifyActivity.USERS).orderByChild("number")
+                .equalTo("+62${nomor}")
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            val iLogin =
+                                Intent(this@LoginActivity, VerifyActivity::class.java)
+                            snapshot.children.forEach { data ->
+                                Log.e("datalogin", data.child("name").value.toString())
+                                iLogin.putExtra(
+                                    VerifyActivity.ID_USER,
+                                    data.key.toString()
+                                )
 
-                                    iLogin.putExtra(
-                                        VerifyActivity.NUMBER_PHONE,
-                                        binding.noHp.text.toString()
-                                    )
-                                    iLogin.putExtra(
-                                        VerifyActivity.ID_USER,
-                                        snapshot.child("id").toString()
-                                    )
-                                    startActivity(iLogin)
-                                } else {
-                                    binding.noHp.error = "Nomor belum terdaftar"
-                                }
                             }
+                            iLogin.putExtra(
+                                VerifyActivity.NUMBER_PHONE,
+                                binding.noHp.text.toString()
+                            )
+                            startActivity(iLogin)
+                        } else {
+                            binding.noHp.error = "Nomor belum terdaftar"
+                        }
+                    }
 
-                            override fun onCancelled(error: DatabaseError) {
-                                Toast.makeText(this@LoginActivity, "Error: $error", Toast.LENGTH_LONG)
-                                    .show()
-                            }
+                    override fun onCancelled(error: DatabaseError) {
+                        Toast.makeText(
+                            this@LoginActivity,
+                            "Error: $error",
+                            Toast.LENGTH_LONG
+                        )
+                            .show()
+                    }
 
-                        })
-                }
-            }
+                })
 
 
         }

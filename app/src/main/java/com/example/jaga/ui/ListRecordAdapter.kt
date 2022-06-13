@@ -20,7 +20,8 @@ class ListRecordAdapter(private val listRecord: ArrayList<Record>) : RecyclerVie
     }
 
     override fun onBindViewHolder(holder: ListRecordAdapter.ViewHolder, position: Int) {
-
+        val dataRecord = listRecord[position]
+        holder.binding.nameRecord.text = dataRecord.name
     }
 
     override fun getItemCount(): Int = listRecord.size

@@ -39,6 +39,8 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var filePath: Uri
     private lateinit var storageReference: StorageReference
     private lateinit var editViewModel: LoginViewModel
+    private var upload = false
+    private var name_foto: String? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,52 +53,48 @@ class EditProfileActivity : AppCompatActivity() {
         setupViewModel()
 
         binding.btnBack.setOnClickListener {
-            val btnBack = Intent(this,SettingActivity::class.java)
+            val btnBack = Intent(this, SettingActivity::class.java)
             startActivity(btnBack)
         }
 
         reference = FirebaseDatabase.getInstance().getReference(VerifyActivity.USERS)
-        editViewModel.getUser().observe(this) {
+        editViewModel.getUser().observe(this) { it ->
             id_user = it.id
             number_user = it.number
             storageReference = FirebaseStorage.getInstance().getReference(it.id!!)
 
-            if (it.foto == null) {
+
+            if (it.foto?.isEmpty() == true) {
                 Glide.with(this)
                     .load(R.drawable.foto_default)
                     .circleCrop()
                     .into(binding.userProfil)
             } else {
-                Log.e("nama_foto" , it.foto!!)
+                name_foto = it.foto
                 val progressDialog = ProgressDialog(this)
                 progressDialog.setMessage("Sedang Menyiapkan gambar...")
                 progressDialog.setCancelable(false)
                 progressDialog.show()
 
-                val cekfoto = storageReference.child("images/${it.foto}")
-                try {
-                    val localTemp = File.createTempFile("tempfile",".jpg")
-                    cekfoto.getFile(localTemp).addOnSuccessListener{
-                        if(progressDialog.isShowing)
-                            progressDialog.dismiss()
+                storageReference.child("${it.foto}.jpg").downloadUrl.addOnSuccessListener { url ->
+                    if (progressDialog.isShowing)
+                        progressDialog.dismiss()
+                    Log.e("file", it.toString())
+                    Glide.with(this)
+                        .load(url)
+                        .circleCrop()
+                        .into(binding.userProfil)
 
-                        val bitmap = BitmapFactory.decodeFile(localTemp.absolutePath)
 
-                        Glide.with(this)
-                            .load(cekfoto.child("${id_user}/images/${bitmap}"))
-                            .circleCrop()
-                            .into(binding.userProfil)
-                    }.addOnFailureListener{ error ->
-                        if(progressDialog.isShowing)
-                            progressDialog.dismiss()
+                }.addOnFailureListener { error ->
+                    if (progressDialog.isShowing)
+                        progressDialog.dismiss()
 
-                        Toast.makeText(this, "Gambar Error: ${error.message}",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Gambar Error: ${error.message}", Toast.LENGTH_SHORT)
+                        .show()
 
-                    }
-
-                }catch (e:IOException){
-                    e.printStackTrace()
                 }
+
 
             }
 
@@ -113,10 +111,11 @@ class EditProfileActivity : AppCompatActivity() {
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-        binding.tglLahir.setOnClickListener {
+        binding.tglLahirText.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                val dialog: DatePickerDialog =
-                    DatePickerDialog(this,
+                val dialog =
+                    DatePickerDialog(
+                        this,
                         { p0, year, month, dayOfMonth ->
                             val month2 = month + 1
                             val date: String = "$dayOfMonth/$month2/$year"
@@ -132,12 +131,13 @@ class EditProfileActivity : AppCompatActivity() {
         }
 
         binding.btnUbahFoto.setOnClickListener {
-            selectImage()
+//            selectImage()
         }
 
 
         binding.btnSaveEdit.setOnClickListener {
             uploadImage()
+
 
         }
 
@@ -171,7 +171,11 @@ class EditProfileActivity : AppCompatActivity() {
                     contentResolver,
                     filePath
                 )
-                binding.userProfil.setImageBitmap(bitmap)
+                Glide.with(this)
+                    .load(bitmap)
+                    .circleCrop()
+                    .into(binding.userProfil)
+                upload = true
             } catch (e: IOException) {
                 e.printStackTrace()
             }
@@ -180,16 +184,33 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun uploadImage() {
-        if (filePath != null) {
+        if (upload) {
+
             val progressDialog: ProgressDialog = ProgressDialog(this)
             progressDialog.setTitle("Sedang Mengunggah foto...")
             progressDialog.show()
-
-            val ref: StorageReference = storageReference.child("$id_user/images")
+            val ref: StorageReference = storageReference.child("images")
 
             ref.putFile(filePath).addOnSuccessListener {
                 progressDialog.dismiss();
-                reference.child(id_user!!).child("foto").setValue(filePath.toString())
+                name_foto = it.storage.downloadUrl.toString()
+                reference.child(id_user!!).child("foto").setValue(name_foto)
+
+                reference.child(id_user!!).child("name")
+                    .setValue(binding.namaUser.editText?.text.toString())
+                reference.child(id_user!!).child("tgl_lahir")
+                    .setValue(binding.tglLahir.editText?.text.toString())
+                reference.child(id_user!!).child("tentang")
+                    .setValue(binding.tentang.editText?.text.toString())
+                val dataUser = User(
+                    id_user,
+                    number_user,
+                    binding.namaUser.editText?.text.toString(),
+                    binding.tglLahir.editText?.text.toString(),
+                    binding.tentang.editText?.text.toString(),
+                    name_foto
+                )
+                editViewModel.login(dataUser)
 
                 Toast
                     .makeText(
@@ -198,6 +219,9 @@ class EditProfileActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     )
                     .show();
+                val profile = Intent(this, SettingActivity::class.java)
+                startActivity(profile)
+                finish()
             }.addOnFailureListener {
                 progressDialog.dismiss();
                 Toast
@@ -208,29 +232,36 @@ class EditProfileActivity : AppCompatActivity() {
                     )
                     .show();
             }.addOnProgressListener {
-                val progress:Double
-                = (100.0
-                    * it.bytesTransferred
-                    / it.totalByteCount);
+                val progress: Double = (100.0
+                        * it.bytesTransferred
+                        / it.totalByteCount);
                 progressDialog.setMessage(
                     "Uploaded "
-                            + progress.toInt() + "%");
+                            + progress.toInt() + "%"
+                );
             }
+        } else {
+            val dataUser = User(
+                id_user,
+                number_user,
+                binding.namaUser.editText?.text.toString(),
+                binding.tglLahir.editText?.text.toString(),
+                binding.tentang.editText?.text.toString(),
+                name_foto
+            )
+            editViewModel.login(dataUser)
+
+            reference.child(id_user!!).child("name")
+                .setValue(binding.namaUser.editText?.text.toString())
+            reference.child(id_user!!).child("tgl_lahir")
+                .setValue(binding.tglLahir.editText?.text.toString())
+            reference.child(id_user!!).child("tentang")
+                .setValue(binding.tentang.editText?.text.toString())
+
+            val profile = Intent(this, SettingActivity::class.java)
+            startActivity(profile)
+            finish()
         }
-        reference.child(id_user!!).child("name").setValue(binding.namaUser.editText?.text.toString())
-        reference.child(id_user!!).child("tgl_lahir").setValue(binding.tglLahir.editText?.text.toString())
-        reference.child(id_user!!).child("tentang").setValue(binding.tentang.editText?.text.toString())
-        val dataUser = User(
-            id_user,
-            number_user,
-            binding.namaUser.editText?.text.toString(),
-            binding.tglLahir.editText?.text.toString(),
-            binding.tentang.editText?.text.toString(),
-            filePath
-
-
-        )
-        editViewModel.login(dataUser)
 
 
     }
